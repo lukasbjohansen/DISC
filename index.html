@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>DISC Analyse</title>
+  <style>
+  #introForm {
+  max-width: 500px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#introForm h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.required {
+  color: red;
+  font-weight: bold;
+  margin-left: 4px;
+}
+.prep-box {
+  max-width: 600px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
+}
+
+.prep-box h2,
+.prep-box h3 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.prep-box ul {
+  padding-left: 20px;
+}
+
+.prep-box p {
+  margin: 10px 0;
+}
+
+
+.intro-field {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+select:invalid {
+  border-color: red;
+}
+
+
+.intro-field label {
+  flex: 0 0 120px;
+  font-weight: bold;
+}
+
+.intro-field input {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f8f8f8;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  .question {
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 700px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .intro-field select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  }
+
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  td, th {
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  td:first-child {
+    width: 70%;
+  }
+
+  td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) {
+    width: 15%;
+    text-align: center;
+  }
+
+  th {
+    background-color: #efefef;
+  }
+
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #007BFF;
+    transform: translateY(2px);
+  }
+
+  td label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+
+  .submit-button {
+    display: block;
+    margin: 40px auto;
+    padding: 16px 32px;
+    font-size: 18px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+</head>
+<body>
+  <div id="introForm">
+  <h2>Velkommen til DISC-analysen</h2>
+
+  <div class="intro-field">
+    <label for="inputDato">Dato:<span class="required">*</span></label>
+    <input type="date" id="inputDato" required>
+  </div>
+
+  <div class="intro-field">
+    <label for="inputFornavn">Fornavn:<span class="required">*</span></label>
+    <input type="text" id="inputFornavn" required>
+  </div>
+
+  <div class="intro-field">
+    <label for="inputEfternavn">Efternavn:<span class="required">*</span></label>
+    <input type="text" id="inputEfternavn" required>
+  </div>
+
+  <div class="intro-field">
+	  <label for="inputKoen">Køn:<span class="required">*</span></label>
+	  <select id="inputKoen" required>
+	    <option value="">Vælg...</option>
+	    <option value="Mand">Mand</option>
+	    <option value="Kvinde">Kvinde</option>
+	    <option value="Andet">Andet</option>
+	    <option value="Ønsker ikke at oplyse">Ønsker ikke at oplyse</option>
+	  </select>
+  </div>
+
+  <div class="intro-field">
+    <label for="inputFirma">Firma:</label>
+    <input type="text" id="inputFirma">
+  </div>
+
+  <div class="intro-field">
+    <label for="inputEmail">E-mail:<span class="required">*</span></label>
+    <input type="email" id="inputEmail" required>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <label>
+      <input type="checkbox" id="inputSamtykke" required>
+      Jeg giver samtykke til, at min besvarelse må opbevares og anvendes ifm. DISC-analyse.<span class="required">*</span>
+    </label>
+  </div>
+
+  <button onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
+</div>
+  <div id="prepScreen" class="prep-box" style="display: none;">
+  <h2>Vigtige forberedelser</h2>
+  <p>For at sikre det bedste resultat af analysen, anbefaler vi følgende:</p>
+  <ul>
+    <li>Sørg for, at du kan koncentrere dig uden forstyrrelser. Slå din telefon på lydløs, og find et stille sted.</li>
+    <li>Besvar alle udsagn med udgangspunkt i den samme arbejdssituation. Dette er vigtigt for at skabe et klart og sammenhængende billede.</li>
+  </ul>
+
+  <h3>Tidsramme og besvarelse</h3>
+  <ul>
+    <li>Brug maks. 10-12 minutter på at udfylde analysen.</li>
+    <li>Vælg det svar, der naturligt falder dig ind som det første. Det giver det mest præcise resultat.</li>
+  </ul>
+
+  <h3>Enhed og udstyr</h3>
+  <ul>
+    <li>Vi anbefaler, at du bruger en PC eller en tablet med en tilpas stor skærm.</li>
+    <li>Undgå at bruge en mobiltelefon, da det kan forringe resultatet.</li>
+  </ul>
+
+  <p>God fornøjelse!</p>
+  <p>Hvis du har spørgsmål eller oplever tekniske problemer, er du altid velkommen til at kontakte os.</p>
+
+  <p>
+    <strong>Preben Braagaard</strong><br>
+    Coachers<br>
+    Telefon: +45 20 84 55 03<br>
+    E-mail: pb@coachers.dk
+  </p>
+
+  <button onclick="showSurvey()" class="submit-button">Fortsæt</button>
+</div>
+
+
+<div id="questions" style="display:none;"></div>
+
+
+
+
+  </form>
+
+  <script>
+let discMap = {};
+let questions = [];
+let answers = []; // Gemmer DISC-svar som f.eks. { mest: "D", mindst: "S" }
+let respondentInfo = {};
+
+// Kun læs og forbered spørgsmålene – men vis dem først senere
+fetch("disc_udsagn.csv")
+  .then(response => response.text())
+  .then(data => {
+    const lines = data.trim().split('\n').slice(1); // skip header
+    questions = []; // ryd tidligere, hvis reload
+
+    lines.forEach((line, idx) => {
+      const matches = line.match(/^"?(.*?)"?,"?(D|I|S|C)"?$/);
+      if (!matches) return;
+
+      const udsagn = matches[1].trim();
+      const disc = matches[2].trim();
+      discMap[udsagn] = disc;
+
+      const questionIndex = Math.floor(idx / 4);
+      if (!questions[questionIndex]) {
+        questions[questionIndex] = {
+          text: `Spørgsmål ${questionIndex + 1}: Hvilket udsagn passer bedst (MEST) og dårligst (MINDST) på dig?`,
+          options: []
+        };
+      }
+questions[questionIndex].options.push({ text: udsagn, disc });
+
+    });
+
+    console.log("DISC-kort indlæst:", discMap);
+    console.log("Antal spørgsmål:", questions.length);      // ← Her!
+    console.log("Første spørgsmål:", questions[0]);
+    console.log("Sidste spørgsmål:", questions[questions.length - 1]);
+
+  })
+  .catch(err => {
+    console.error("Kunne ikke hente disc_udsagn.csv:", err);
+    alert("Filen 'disc_udsagn.csv' skal ligge i samme mappe som HTML-filen.");
+  });
+
+
+function startSurvey() {
+	const rawDate = document.getElementById("inputDato").value;
+	const parts = rawDate.split("-");
+	const dato = parts.length === 3 ? `${parts[2]}${parts[1]}${parts[0]}` : "";
+
+  const fornavn = document.getElementById("inputFornavn").value;
+  const efternavn = document.getElementById("inputEfternavn").value;
+  const koen = document.getElementById("inputKoen").value;
+  const firma = document.getElementById("inputFirma").value;
+  const email = document.getElementById("inputEmail").value;
+  const samtykke = document.getElementById("inputSamtykke").checked;
+
+  if (!dato || !fornavn || !efternavn || !email || !koen || !samtykke) {
+    alert("Du skal udfylde alle obligatoriske felter (*) og give samtykke for at fortsætte.");
+  return;
+}
+
+  respondentInfo = {
+    dato,
+    fornavn,
+    efternavn,
+    koen,
+    firma,
+    email
+  };
+
+  // Skjul intro, vis spørgsmål
+document.getElementById("introForm").style.display = "none";
+document.getElementById("prepScreen").style.display = "block";
+}
+
+function showSurvey() {
+  document.getElementById("prepScreen").style.display = "none";
+  document.getElementById("questions").style.display = "block";
+  renderQuestions();
+  setupValidation();
+}
+
+function setupValidation() {
+  questions.forEach((q, i) => {
+    const mestInputs = document.querySelectorAll(`input[name='mest${i}']`);
+    const mindstInputs = document.querySelectorAll(`input[name='mindst${i}']`);
+
+    mestInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        mindstInputs.forEach(min => {
+          if (min.value === input.value && input.checked) {
+            min.checked = false; // fjern MINDST hvis MEST er valgt samme sted
+          }
+        });
+      });
+    });
+
+    mindstInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        mestInputs.forEach(mest => {
+          if (mest.value === input.value && input.checked) {
+            mest.checked = false; // fjern MEST hvis MINDST er valgt samme sted
+          }
+        });
+      });
+    });
+  });
+}
+
+function renderQuestions() {
+  const container = document.getElementById("questions");
+  container.innerHTML = "";
+  showQuestion(0);
+}
+
+function showQuestion(index) {
+  const q = questions[index];
+  const container = document.getElementById("questions");
+  container.innerHTML = "";
+
+  const div = document.createElement("div");
+  div.classList.add("question");
+  div.setAttribute("id", `question-${index}`);
+  div.innerHTML = `<p><strong>${q.text}</strong></p>`;
+
+  const table = document.createElement("table");
+  table.innerHTML = `
+    <tr>
+      <th>Udsagn</th>
+      <th>MEST</th>
+      <th>MINDST</th>
+    </tr>
+  `;
+
+  q.options.forEach((opt, j) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${opt.text}</td>
+      <td><input type="radio" name="mest${index}" value="${opt.text}" data-disc="${opt.disc}" id="mest-${index}-${j}"></td>
+      <td><input type="radio" name="mindst${index}" value="${opt.text}" data-disc="${opt.disc}" id="mindst-${index}-${j}"></td>
+    `;
+    table.appendChild(row);
+  });
+
+  div.appendChild(table);
+
+  // Automatisk gensidig udelukkelse
+  setTimeout(() => {
+    const mestRadios = document.querySelectorAll(`input[name='mest${index}']`);
+    const mindstRadios = document.querySelectorAll(`input[name='mindst${index}']`);
+
+    mestRadios.forEach((mest) => {
+      mest.addEventListener("change", () => {
+        mindstRadios.forEach((mindst) => {
+          if (mindst.value === mest.value && mest.checked) {
+            mindst.checked = false;
+          }
+        });
+      });
+    });
+
+    mindstRadios.forEach((mindst) => {
+      mindst.addEventListener("change", () => {
+        mestRadios.forEach((mest) => {
+          if (mest.value === mindst.value && mindst.checked) {
+            mest.checked = false;
+          }
+        });
+      });
+    });
+  }, 50);
+
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = index === questions.length - 1 ? "Afslut og indsend" : "Næste";
+  nextBtn.className = "submit-button";
+
+  nextBtn.onclick = () => {
+  const mest = document.querySelector(`input[name='mest${index}']:checked`);
+  const mindst = document.querySelector(`input[name='mindst${index}']:checked`);
+
+  if (!mest || !mindst) {
+    alert("Du skal vælge både MEST og MINDST før du kan fortsætte.");
+    return;
+  }
+
+  const mestDISC = mest.dataset.disc;
+  const mindstDISC = mindst.dataset.disc;
+
+  answers[index] = { mest: mestDISC, mindst: mindstDISC }; // 💾 gem svar
+
+  if (index + 1 < questions.length) {
+    showQuestion(index + 1);
+  } else {
+    downloadJSON(); // kald direkte
+  }
+};
+
+  div.appendChild(nextBtn);
+  container.appendChild(div);
+}
+
+function createQuestionElement(index) {
+  const q = questions[index];
+  const div = document.createElement("div");
+  div.classList.add("question");
+  div.setAttribute("id", `question-${index}`);
+  div.innerHTML = `<p><strong>${q.text}</strong></p>`;
+
+  const table = document.createElement("table");
+  table.innerHTML = `
+    <tr>
+      <th>Udsagn</th>
+      <th>MEST</th>
+      <th>MINDST</th>
+    </tr>
+  `;
+
+  q.options.forEach((opt, j) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${opt.text}</td>
+      <td><input type="radio" name="mest${index}" value="${opt.text}" data-disc="${opt.disc}"></td>
+      <td><input type="radio" name="mindst${index}" value="${opt.text}" data-disc="${opt.disc}"></td>
+    `;
+    table.appendChild(row);
+  });
+
+  div.appendChild(table);
+
+  // overvåg MEST og MINDST valg
+  div.addEventListener("change", () => {
+    const mest = document.querySelector(`input[name='mest${index}']:checked`);
+    const mindst = document.querySelector(`input[name='mindst${index}']:checked`);
+    if (mest && mindst) {
+      if (index + 1 < questions.length) {
+        const next = document.getElementById(`question-${index + 1}`);
+        if (!next) {
+          const nextQuestion = createQuestionElement(index + 1);
+          document.getElementById("questions").appendChild(nextQuestion);
+          nextQuestion.scrollIntoView({ behavior: "smooth" });
+        }
+      } else {
+        document.getElementById("submitBtn").style.display = "block";
+        document.getElementById("submitBtn").scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
+
+  return div;
+}
+
+
+async function downloadJSON() {
+  if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
+
+  const score = { D1: 0, I1: 0, S1: 0, C1: 0, D2: 0, I2: 0, S2: 0, C2: 0 };
+
+  answers.forEach(ans => {
+  if (ans?.mest && score[ans.mest + '1'] !== undefined) {
+    score[ans.mest + '1']++;
+  }
+  if (ans?.mindst && score[ans.mindst + '2'] !== undefined) {
+    score[ans.mindst + '2']++;
+  }
+});
+
+
+
+  const result = {
+    ...respondentInfo,
+    score
+  };
+
+  const jsonBlob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
+
+  // Brug moderne file picker hvis muligt
+  if (window.showSaveFilePicker) {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: "disc-resultat.json",
+      types: [{
+        description: "JSON-fil",
+        accept: { "application/json": [".json"] }
+      }]
+    });
+    const writable = await handle.createWritable();
+    await writable.write(jsonBlob);
+    await writable.close();
+  } else {
+    // fallback til klassisk download
+    const url = URL.createObjectURL(jsonBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "disc-resultat.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  setTimeout(() => {
+    location.reload(); // Gå tilbage til introduktionen
+  }, 1000);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // måneder = 0-indekseret
+  const dd = String(today.getDate()).padStart(2, '0');
+
+  const todayString = `${yyyy}-${mm}-${dd}`; // HTML date format
+  document.getElementById("inputDato").value = todayString;
+});
+
+
+
+</script>
+
+</body>
+</html>
