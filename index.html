@@ -52,7 +52,7 @@
   display: grid;
   grid-template-columns: 130px 1fr;
   gap: 12px;
-  align-items: center;
+  align-items: start;
   margin-bottom: 16px;
 }
 select:invalid {
@@ -71,6 +71,11 @@ select:invalid {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+.intro-field p {
+	margin: 0;
+	font-size: 12px;
+	font-weight: 100;
 }
 
   body {
@@ -190,7 +195,6 @@ select:invalid {
 	    <option value="Mand">Mand</option>
 	    <option value="Kvinde">Kvinde</option>
 	    <option value="Andet">Andet</option>
-	    <option value="Ønsker ikke at oplyse">Ønsker ikke at oplyse</option>
 	  </select>
   </div>
 
@@ -204,11 +208,15 @@ select:invalid {
     <input type="email" id="inputEmail" required>
   </div>
 
-  <div style="margin-top: 20px;">
-    <label>
-      <input type="checkbox" id="inputSamtykke" required>
-      Jeg giver samtykke til, at min besvarelse må opbevares og anvendes ifm. DISC-analyse.<span class="required">*</span>
-    </label>
+  <div class="intro-field">
+    <label>Samtykke:<span class="required">*</span>
+    <input type="checkbox" id="inputSamtykke" required></label>
+    <p>
+        Jeg giver hermed samtykke til, at den information jeg afgiver til udfyldelse af min DISCline profil,
+	    kan anvendes til rekruttering og udviklingsaktiviteter relateret til mig.
+	    Jeg giver tilsagn om, at jeg er over 16 år gammel. Mine data bliver bevaret og slettet jævnfør EU-lov om opbevaring og sletning af persondata.
+	    <br><br>Har du spørgsmål til denne, kontakt venligst Coachers på: <br>tlf. + 45 20 84 55 03.
+    </p>
   </div>
 
   <button onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
