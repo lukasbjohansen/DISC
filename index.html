@@ -189,9 +189,18 @@ select:invalid {
   </div>
 
   <div class="intro-field">
+  <label for="inputProfiltype">Profiltype: <span class="required">*</span></label>
+    <select id="inputProfiltype" required>
+      <option value="Basic">Basic</option>
+      <option value="Sælger">Sælger</option>
+      <option value="Leder">Leder</option>
+    </select>
+  </div>
+
+  <div class="intro-field">
 	  <label for="inputKoen">Køn:<span class="required">*</span></label>
 	  <select id="inputKoen" required>
-	    <option value="">Vælg...</option>
+	    <option value="">__</option>
 	    <option value="Mand">Mand</option>
 	    <option value="Kvinde">Kvinde</option>
 	    <option value="Andet">Andet</option>
@@ -215,7 +224,7 @@ select:invalid {
         Jeg giver hermed samtykke til, at den information jeg afgiver til udfyldelse af min DISCline profil,
 	    kan anvendes til rekruttering og udviklingsaktiviteter relateret til mig.
 	    Jeg giver tilsagn om, at jeg er over 16 år gammel. Mine data bliver bevaret og slettet jævnfør EU-lov om opbevaring og sletning af persondata.
-	    <br><br>Har du spørgsmål til denne, kontakt venligst Coachers på: <br>tlf. + 45 20 84 55 03.
+	    <br><br>Har du spørgsmål til denne, kontakt venligst Coachers på: <br>tlf: <a href="tel:+4520845503">+45 20 84 55 03</a><br>mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>
     </p>
   </div>
 
@@ -247,8 +256,8 @@ select:invalid {
   <p>
     <strong>Preben Braagaard</strong><br>
     Coachers<br>
-    Telefon: +45 20 84 55 03<br>
-    E-mail: pb@coachers.dk
+    Telefon: <a href="tel:+4520845503">+45 20 84 55 03</a><br>
+    E-mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>
   </p>
 
   <button onclick="showSurvey()" class="submit-button">Fortsæt</button>
@@ -256,6 +265,13 @@ select:invalid {
 
 
 <div id="questions" style="display:none;"></div>
+  <div id="thankYouScreen" class="prep-box" style="display: none;">
+  <h2>Tak for din besvarelse!</h2>
+  <p>Du får besked fra <strong>Coachers</strong>, når din DISCline-profil er klar.</p>
+	  <p>Hvis du har nogen spørgsmål kan du kontakte <strong>Preben Braagaard</strong> på <br>Telefon: <a href="tel:+4520845503">+45 20 84 55 03</a><br>E-mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a><br><br></p>
+  <p>Du kan nu lukke denne side.</p>
+</div>
+
 
 
 
@@ -313,20 +329,22 @@ function startSurvey() {
 
   const fornavn = document.getElementById("inputFornavn").value;
   const efternavn = document.getElementById("inputEfternavn").value;
+  const profiltype = document.getElementById("inputProfiltype").value;
   const koen = document.getElementById("inputKoen").value;
   const firma = document.getElementById("inputFirma").value;
   const email = document.getElementById("inputEmail").value;
   const samtykke = document.getElementById("inputSamtykke").checked;
 
-  if (!dato || !fornavn || !efternavn || !email || !koen || !samtykke) {
-    alert("Du skal udfylde alle obligatoriske felter (*) og give samtykke for at fortsætte.");
-  return;
-}
+  if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !samtykke) {
+    alert("Du skal udfylde alle felter og give samtykke for at fortsætte.");
+    return;
+  }
 
   respondentInfo = {
     dato,
     fornavn,
     efternavn,
+    profiltype,
     koen,
     firma,
     email
@@ -559,10 +577,72 @@ async function downloadJSON() {
     URL.revokeObjectURL(url);
   }
 
-  setTimeout(() => {
-    location.reload(); // Gå tilbage til introduktionen
-  }, 1000);
+  document.getElementById("questions").style.display = "none";
+  document.getElementById("thankYouScreen").style.display = "block";
+
 }
+
+async function uploadToGitHub() {
+  if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
+
+  const score = { D1: 0, I1: 0, S1: 0, C1: 0, D2: 0, I2: 0, S2: 0, C2: 0 };
+
+  answers.forEach(ans => {
+    if (ans?.mest && score[ans.mest + '1'] !== undefined) {
+      score[ans.mest + '1']++;
+    }
+    if (ans?.mindst && score[ans.mindst + '2'] !== undefined) {
+      score[ans.mindst + '2']++;
+    }
+  });
+
+  const result = {
+    ...respondentInfo,
+    score
+  };
+
+  // 🔐 GitHub config
+  const GITHUB_USERNAME = "lukasbjohansen";
+  const GITHUB_REPO = "DISC";
+  const GITHUB_TOKEN = "ghp_xxxDIN_PERSONLIGE_TOKENxxx"; // 👈 Indsæt sikkert!
+  const FILE_PATH = `input/disc-${Date.now()}.json`;
+
+  const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${FILE_PATH}`;
+
+  const encodedContent = btoa(
+  new TextEncoder().encode(JSON.stringify(result, null, 2))
+    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+);
+
+  const body = {
+    message: `New DISC submission by ${respondentInfo.fornavn} ${respondentInfo.efternavn}`,
+    content: encodedContent,
+    committer: {
+      name: "DISC Bot",
+      email: "bot@coachers.dk"
+    }
+  };
+
+  const response = await fetch(apiUrl, {
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${GITHUB_TOKEN}`,
+      "Accept": "application/vnd.github.v3+json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (response.ok) {
+    alert("Svar indsendt og gemt på GitHub!");
+    location.reload();
+  } else {
+    const error = await response.json();
+    console.error("GitHub upload-fejl:", error);
+    alert("Der opstod en fejl under indsendelsen.");
+  }
+}
+
 
 window.addEventListener("DOMContentLoaded", () => {
   const today = new Date();
