@@ -293,52 +293,45 @@ let answers = []; // Gemmer DISC-svar som f.eks. { mest: "D", mindst: "S" }
 let respondentInfo = {};
 
 // Kun læs og forbered spørgsmålene – men vis dem først senere
-function fetchQuestions(ramme){
-	let path = "";
-	switch (ramme) {
-		case "Pro":
-			path = "disc_udsagn_pro.csv";
-			break;
-		case "Oprindelig":
-			path = "disc_udsagn_oprindelig.csv";
-			break;
-	}
-	fetch(path)
+function fetchQuestions(ramme) {
+  let path = ramme === "Pro" ? "disc_udsagn_pro.csv" : "disc_udsagn_oprindelig.csv";
+
+  return fetch(path)
   .then(response => response.text())
   .then(data => {
-    const lines = data.trim().split('\n').slice(1); // skip header
-    questions = []; // ryd tidligere, hvis reload
+    const lines = data.trim().split('\n').slice(1); // skip header line
+    questions = [];
 
     lines.forEach((line, idx) => {
-      const matches = line.match(/^"?(.*?)"?,"?(D|I|S|C)"?$/);
-      if (!matches) return;
+  const lastComma = line.lastIndexOf(",");
+  if (lastComma === -1) return;
 
-      const udsagn = matches[1].trim();
-      const disc = matches[2].trim();
-      discMap[udsagn] = disc;
+  const udsagn = line.substring(0, lastComma).trim().replace(/^"|"$/g, '');
+  const disc = line.substring(lastComma + 1).trim();
 
-      const questionIndex = Math.floor(idx / 4);
-      if (!questions[questionIndex]) {
-        questions[questionIndex] = {
-          text: `Spørgsmål ${questionIndex + 1}: Hvilket udsagn passer bedst (MEST) og dårligst (MINDST) på dig?`,
-          options: []
-        };
-      }
-questions[questionIndex].options.push({ text: udsagn, disc });
+  if (!udsagn || !disc || !"DISC".includes(disc)) return;
 
-    });
+  const questionIndex = Math.floor(idx / 4);
+  if (!questions[questionIndex]) {
+    questions[questionIndex] = {
+      text: `Spørgsmål ${questionIndex + 1}: Hvilket udsagn passer bedst (MEST) og dårligst (MINDST) på dig?`,
+      options: []
+    };
+  }
 
-    console.log("DISC-kort indlæst:", discMap);
-    console.log("Antal spørgsmål:", questions.length);      // ← Her!
-    console.log("Første spørgsmål:", questions[0]);
-    console.log("Sidste spørgsmål:", questions[questions.length - 1]);
+  questions[questionIndex].options.push({ text: udsagn, disc });
+});
 
+
+    console.log("DISC-kort indlæst:", questions.length, "spørgsmål");
   })
   .catch(err => {
-    console.error("Kunne ikke hente disc_udsagn.csv:", err);
-    alert("Filen 'disc_udsagn.csv' skal ligge i samme mappe som HTML-filen.");
+    console.error("Kunne ikke hente CSV:", err);
+    alert("Der opstod en fejl ved indlæsning af spørgerammen.");
   });
+
 }
+
 
 function startSurvey() {
 	const rawDate = document.getElementById("inputDato").value;
@@ -373,15 +366,18 @@ function startSurvey() {
   // Skjul intro, vis spørgsmål
 document.getElementById("introForm").style.display = "none";
 document.getElementById("prepScreen").style.display = "block";
-fetchQuestions(respondentInfo.spoergeramme);
 }
 
 function showSurvey() {
   document.getElementById("prepScreen").style.display = "none";
   document.getElementById("questions").style.display = "block";
-  renderQuestions();
-  setupValidation();
+
+  fetchQuestions(respondentInfo.spoergeramme).then(() => {
+    renderQuestions();
+    setupValidation();
+  });
 }
+
 
 function setupValidation() {
   questions.forEach((q, i) => {
