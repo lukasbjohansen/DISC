@@ -198,6 +198,14 @@ select:invalid {
   </div>
 
   <div class="intro-field">
+  <label for="inputSpoergeramme">Spørgeramme: <span class="required">*</span></label>
+    <select id="inputSpoergeramme" required>
+      <option value="Pro">Basic</option>
+      <option value="Oprindelig">Sælger</option>
+    </select>
+  </div>
+
+  <div class="intro-field">
 	  <label for="inputKoen">Køn:<span class="required">*</span></label>
 	  <select id="inputKoen" required>
 	    <option value="">__</option>
@@ -285,7 +293,17 @@ let answers = []; // Gemmer DISC-svar som f.eks. { mest: "D", mindst: "S" }
 let respondentInfo = {};
 
 // Kun læs og forbered spørgsmålene – men vis dem først senere
-fetch("disc_udsagn.csv")
+function fetchQuestions(ramme){
+	let path = "";
+	switch (ramme) {
+		case "Pro":
+			path = "disc_udsagn_pro.csv";
+			break;
+		case "Oprindelig":
+			path = "disc_udsagn_oprindelig.csv";
+			break;
+	}
+	fetch(path)
   .then(response => response.text())
   .then(data => {
     const lines = data.trim().split('\n').slice(1); // skip header
@@ -320,7 +338,7 @@ questions[questionIndex].options.push({ text: udsagn, disc });
     console.error("Kunne ikke hente disc_udsagn.csv:", err);
     alert("Filen 'disc_udsagn.csv' skal ligge i samme mappe som HTML-filen.");
   });
-
+}
 
 function startSurvey() {
 	const rawDate = document.getElementById("inputDato").value;
@@ -330,12 +348,13 @@ function startSurvey() {
   const fornavn = document.getElementById("inputFornavn").value;
   const efternavn = document.getElementById("inputEfternavn").value;
   const profiltype = document.getElementById("inputProfiltype").value;
+  const spoergeramme = document.getElementById("inputSpoergeramme").value;
   const koen = document.getElementById("inputKoen").value;
   const firma = document.getElementById("inputFirma").value;
   const email = document.getElementById("inputEmail").value;
   const samtykke = document.getElementById("inputSamtykke").checked;
 
-  if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !samtykke) {
+  if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !spoergeramme || !samtykke) {
     alert("Du skal udfylde alle felter og give samtykke for at fortsætte.");
     return;
   }
@@ -345,6 +364,7 @@ function startSurvey() {
     fornavn,
     efternavn,
     profiltype,
+    spoergeramme,
     koen,
     firma,
     email
@@ -353,6 +373,7 @@ function startSurvey() {
   // Skjul intro, vis spørgsmål
 document.getElementById("introForm").style.display = "none";
 document.getElementById("prepScreen").style.display = "block";
+fetchQuestions(respondentInfo.spoergeramme);
 }
 
 function showSurvey() {
