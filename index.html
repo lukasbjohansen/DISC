@@ -91,9 +91,9 @@ select:invalid {
 
   .question {
     background: #fff;
-    padding: 20px;
+    padding: 30px;
     margin: 20px auto;
-    max-width: 700px;
+    max-width: 1200px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
@@ -108,22 +108,30 @@ select:invalid {
   table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
   }
 
   td, th {
     padding: 10px;
     text-align: left;
-    vertical-align: top;
+    vertical-align: middle;
   }
 
   td:first-child {
-    width: 70%;
+    width: 50%;
   }
 
   td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) {
-    width: 15%;
-    text-align: center;
+    width: 25%;
+    text-align: left;
+  }
+
+  /* Dobbelte vertikale streger mellem de tre kolonner */
+  td:nth-child(2), th:nth-child(2) {
+    border-left: 1px solid #c7c7c7;
+  }
+  td:nth-child(3), th:nth-child(3) {
+    border-left: 1px solid #c7c7c7;
   }
 
   th {
@@ -136,6 +144,143 @@ select:invalid {
     cursor: pointer;
     accent-color: #007BFF;
     transform: translateY(2px);
+  }
+
+  /* Sliders (Likert) */
+  input[type="range"] {
+    width: calc(100% - 24px); /* så track slutter under knappen ved min/max */
+    height: 26px; /* plads til thumb */
+    margin: 0 12px; /* ~½ thumb i begge sider */
+    background: transparent;
+    display: block;
+  }
+  /* WebKit (Chrome/Edge/Safari) */
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px; /* smallere baggrund */
+    background: #e6e6e6;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    position: relative;
+    /* 5 lodrette tick-linjer oven på tracket ved 0%, 25%, 50%, 75%, 100% */
+    background-image:
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999);
+    background-size: 1px 100%, 1px 100%, 1px 100%, 1px 100%, 1px 100%;
+    background-position: 0% 50%, 25% 50%, 50% 50%, 75% 50%, 100% 50%;
+    background-repeat: no-repeat;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #007BFF;
+    border: 2px solid #0056b3;
+    margin-top: -7px; /* finjusteret centrering på 6px track */
+    cursor: pointer;
+  }
+  /* Firefox */
+  input[type="range"]::-moz-range-track {
+    height: 6px; /* smallere baggrund */
+    background: #e6e6e6;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    /* 5 lodrette tick-linjer oven på tracket ved 0%, 25%, 50%, 75%, 100% */
+    background-image:
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999),
+      linear-gradient(#999, #999);
+    background-size: 1px 100%, 1px 100%, 1px 100%, 1px 100%, 1px 100%;
+    background-position: 0% 50%, 25% 50%, 50% 50%, 75% 50%, 100% 50%;
+    background-repeat: no-repeat;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #007BFF;
+    border: 2px solid #0056b3;
+    cursor: pointer;
+  }
+
+  /* Slider container (beholder) */
+  .slider-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0; /* venstrestillet */
+  }
+
+  /* Unanswered state: skjul thumb og skjul track indtil valg */
+  .slider-wrap.unanswered input[type="range"]::-webkit-slider-thumb { opacity: 0; }
+  .slider-wrap.unanswered input[type="range"]::-moz-range-thumb { opacity: 0; }
+  .slider-wrap.unanswered input[type="range"]::-webkit-slider-runnable-track { opacity: 0; }
+  .slider-wrap.unanswered input[type="range"]::-moz-range-track { opacity: 0; }
+
+  /* Klikbare Likert-labels */
+  .likert-labels {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .likert-labels span {
+    padding: 8px 10px;
+    border-radius: 9999px; /* pill */
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap; /* undgå linjeskift i fx 'Meget uenig' */
+    background: #f6f8fb;
+    border: 1px solid #cfd8e3;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    color: #333;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .likert-labels span:hover {
+    background: #eef3f9;
+    border-color: #b8c6d8;
+  }
+  .likert-labels span:active {
+    background: #e6eef8;
+    border-color: #a7b9d1;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .likert-labels span:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+  }
+  .likert-labels span.selected {
+    background: #e7f1ff;
+    border: 1px solid #007BFF;
+    color: #0b3d91;
+    font-weight: 600;
+  }
+  .ticks-overlay {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 6px; /* matcher track-højde */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: stretch; /* fyld hele track-højden */
+  }
+  .ticks-overlay span {
+    justify-self: center;
+    width: 1px;
+    height: 100%; /* præcis samme højde som track */
+    background: #999;
+    border-radius: 1px;
   }
 
   td label {
@@ -200,8 +345,9 @@ select:invalid {
   <div class="intro-field">
   <label for="inputSpoergeramme">Spørgeramme: <span class="required">*</span></label>
     <select id="inputSpoergeramme" required>
-      <option value="Pro">Pro</option>
-      <option value="Oprindelig">Oprindelig</option>
+        <option value="Likert">Likert</option>
+        <option value="Pro">Pro</option>
+        <option value="Oprindelig">Oprindelig</option>
     </select>
   </div>
 
@@ -291,6 +437,10 @@ let discMap = {};
 let questions = [];
 let answers = []; // Gemmer DISC-svar som f.eks. { mest: "D", mindst: "S" }
 let respondentInfo = {};
+let likertItems = [];
+let likertQuestions = [];
+let likertAnswers = [];
+let likertCurrent = 0;
 
 // Kun læs og forbered spørgsmålene – men vis dem først senere
 function fetchQuestions(ramme) {
@@ -322,6 +472,27 @@ function fetchQuestions(ramme) {
   questions[questionIndex].options.push({ text: udsagn, disc });
 });
 
+    // Fjern eventuelle tomme pladser (hvis CSV ikke er perfekt delt i 4)
+    questions = questions.filter(Boolean);
+
+    // Bland rækkefølgen af spørgsmål (Fisher–Yates)
+    for (let i = questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+
+    // Bland rækkefølgen af udsagn inden i hvert spørgsmål
+    questions.forEach(q => {
+      for (let i = q.options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+      }
+    });
+
+    // Opdater spørgsmålstitler så de matcher den nye rækkefølge
+    questions.forEach((q, i) => {
+      q.text = `Spørgsmål ${i + 1}: Hvilket udsagn passer bedst (MEST) og dårligst (MINDST) på dig?`;
+    });
 
     console.log("DISC-kort indlæst:", questions.length, "spørgsmål");
   })
@@ -331,6 +502,248 @@ function fetchQuestions(ramme) {
   });
 
 }
+
+// Likert: hent udsagn fra disc_udsagn_2.0.csv
+function fetchLikertItems() {
+  const path = "disc_udsagn_2.0.csv";
+  return fetch(path)
+    .then(response => response.text())
+    .then(data => {
+      const lines = data.trim().split('\n').slice(1); // skip header
+      likertItems = [];
+      lines.forEach(line => {
+        const lastComma = line.lastIndexOf(",");
+        if (lastComma === -1) return;
+        const udsagn = line.substring(0, lastComma).trim().replace(/^"|"$/g, '');
+        const disc = line.substring(lastComma + 1).trim();
+        if (!udsagn) return;
+        likertItems.push({ text: udsagn, disc });
+      });
+      // Bland rækkefølgen for at undgå ordensbias
+      for (let i = likertItems.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [likertItems[i], likertItems[j]] = [likertItems[j], likertItems[i]];
+      }
+      // Gruppér i blokke á 4 udsagn
+      likertQuestions = [];
+      for (let i = 0; i < likertItems.length; i += 4) {
+        const group = likertItems.slice(i, i + 4);
+        if (group.length === 4) {
+          likertQuestions.push({ items: group });
+        }
+      }
+      // Forbered svarstruktur: to værdier pr. udsagn (naturlig/arbejde)
+      likertAnswers = likertQuestions.map(q =>
+        q.items.map(item => ({
+          text: item.text,
+          disc: item.disc || "",
+          naturlig: null,
+          arbejde: null
+        }))
+      );
+      likertCurrent = 0;
+      console.log("Likert-udsagn indlæst:", likertItems.length, "– grupper:", likertQuestions.length);
+    })
+    .catch(err => {
+      console.error("Kunne ikke hente Likert-CSV:", err);
+      alert("Der opstod en fejl ved indlæsning af Likert-spørgerammen.");
+    });
+}
+
+// Likert: vis ét spørgsmål ad gangen med 4 udsagn og to Likert-kolonner (sliders 1–5)
+function renderLikertSurvey() {
+  const container = document.getElementById("questions");
+  container.innerHTML = "";
+
+  const q = likertQuestions[likertCurrent];
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("question");
+
+  const header = document.createElement("h2");
+  header.style.marginTop = "0";
+  header.textContent = `Spørgsmål ${likertCurrent + 1}: I hvilken grad passer nedenstående udsagn på dig?`;
+  wrapper.appendChild(header);
+
+  const table = document.createElement("table");
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Udsagn</th>
+        <th>Min naturlige adfærd</th>
+        <th>Adfærd på mit arbejde</th>
+      </tr>
+    </thead>
+    <tbody id="likert-body"></tbody>
+  `;
+  wrapper.appendChild(table);
+
+  const tbody = table.querySelector("#likert-body");
+  const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
+
+  q.items.forEach((item, row) => {
+    const answer = likertAnswers[likertCurrent][row];
+    const tr = document.createElement("tr");
+
+    const makeCell = (type) => {
+      const td = document.createElement("td");
+      td.style.textAlign = "left";
+      td.style.verticalAlign = "middle";
+
+      // Header labels over slider (klikbare)
+      const labelBar = document.createElement("div");
+      labelBar.className = "likert-labels";
+      labelBar.style.display = "grid";
+      labelBar.style.gridTemplateColumns = "repeat(5, 1fr)";
+      labelBar.style.gap = "6px";
+      labelBar.style.fontSize = "12px";
+      labelBar.style.marginBottom = "6px";
+
+      const labelSpans = [];
+      for (let v = 1; v <= 5; v++) {
+        const sp = document.createElement("span");
+        sp.textContent = labels[v - 1];
+        sp.dataset.val = String(v);
+        labelBar.appendChild(sp);
+        labelSpans.push(sp);
+      }
+      td.appendChild(labelBar);
+
+      // Brug kun klikbare labels (ingen slider)
+      const currentVal = (type === "naturlig" ? answer.naturlig : answer.arbejde);
+
+      // Funktion til at opdatere label-highlights
+      const updateLabels = (val) => {
+        labelSpans.forEach(sp => {
+          if (parseInt(sp.dataset.val, 10) === val) {
+            sp.classList.add("selected");
+          } else {
+            sp.classList.remove("selected");
+          }
+        });
+      };
+      if (currentVal != null) updateLabels(currentVal);
+
+      // Klik på label sætter værdi direkte
+      labelSpans.forEach(sp => {
+        sp.addEventListener("click", () => {
+          const v = parseInt(sp.dataset.val, 10);
+          updateLabels(v);
+          const qIdx = likertCurrent;
+          const rIdx = row;
+          const kind = type;
+          likertAnswers[qIdx][rIdx][kind] = v;
+        });
+      });
+
+      return td;
+    };
+
+    const tdText = document.createElement("td");
+    tdText.textContent = item.text;
+    tdText.style.fontSize = "18px";
+    tdText.style.fontWeight = "600";
+
+    tr.appendChild(tdText);
+    tr.appendChild(makeCell("naturlig"));
+    tr.appendChild(makeCell("arbejde"));
+    tbody.appendChild(tr);
+  });
+
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "submit-button";
+  nextBtn.textContent = (likertCurrent === likertQuestions.length - 1) ? "Afslut og indsend" : "Næste";
+  nextBtn.onclick = () => {
+    // valider at alle 4 rækker har begge valg
+    const rows = likertAnswers[likertCurrent];
+    const incomplete = rows.findIndex(r => r.naturlig == null || r.arbejde == null);
+    if (incomplete !== -1) {
+      alert("Udfyld venligst alle vurderinger (begge kolonner) før du fortsætter.");
+      return;
+    }
+    if (likertCurrent < likertQuestions.length - 1) {
+      likertCurrent += 1;
+      renderLikertSurvey();
+    } else {
+      downloadLikertJSON();
+    }
+  };
+
+  wrapper.appendChild(nextBtn);
+  container.appendChild(wrapper);
+}
+
+// Likert: indsamling og download af JSON (to svar pr. udsagn)
+async function downloadLikertJSON() {
+  // Valider alle spørgsmål
+  for (let q = 0; q < likertAnswers.length; q++) {
+    const rows = likertAnswers[q];
+    const incomplete = rows.findIndex(r => r.naturlig == null || r.arbejde == null);
+    if (incomplete !== -1) {
+      alert(`Spørgsmål ${q + 1} mangler besvarelser. Udfyld venligst alle vurderinger.`);
+      likertCurrent = q;
+      renderLikertSurvey();
+      return;
+    }
+  }
+
+  if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
+
+  // Saml svar
+  const likertResponses = likertAnswers.flatMap((rows, qIndex) =>
+    rows.map((row, rIndex) => ({
+      question: qIndex + 1,
+      index: rIndex + 1,
+      text: row.text,
+      disc: row.disc || "",
+      naturlig: row.naturlig,
+      arbejde: row.arbejde
+    }))
+  );
+
+  // Bevar score-struktur for kompatibilitet (0-værdier som placeholder)
+  const score = { D1: 0, I1: 0, S1: 0, C1: 0, D2: 0, I2: 0, S2: 0, C2: 0 };
+
+  const result = {
+    ...respondentInfo,
+    score,
+    likert: {
+      scale: [
+        { value: 1, label: "Meget uenig" },
+        { value: 2, label: "Uenig" },
+        { value: 3, label: "Både/og" },
+        { value: 4, label: "Enig" },
+        { value: 5, label: "Meget enig" }
+      ],
+      responses: likertResponses
+    }
+  };
+
+  const jsonBlob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
+
+  if (window.showSaveFilePicker) {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: "disc-resultat-likert.json",
+      types: [{
+        description: "JSON-fil",
+        accept: { "application/json": [".json"] }
+      }]
+    });
+    const writable = await handle.createWritable();
+    await writable.write(jsonBlob);
+    await writable.close();
+  } else {
+    const url = URL.createObjectURL(jsonBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "disc-resultat-likert.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById("questions").style.display = "none";
+  document.getElementById("thankYouScreen").style.display = "block";
+}
+
 
 
 function startSurvey() {
@@ -372,10 +785,16 @@ function showSurvey() {
   document.getElementById("prepScreen").style.display = "none";
   document.getElementById("questions").style.display = "block";
 
-  fetchQuestions(respondentInfo.spoergeramme).then(() => {
-    renderQuestions();
-    setupValidation();
-  });
+  if (respondentInfo.spoergeramme === "Likert") {
+    fetchLikertItems().then(() => {
+      renderLikertSurvey();
+    });
+  } else {
+    fetchQuestions(respondentInfo.spoergeramme).then(() => {
+      renderQuestions();
+      setupValidation();
+    });
+  }
 }
 
 
