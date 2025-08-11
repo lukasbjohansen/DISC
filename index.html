@@ -146,82 +146,6 @@ select:invalid {
     transform: translateY(2px);
   }
 
-  /* Sliders (Likert) */
-  input[type="range"] {
-    width: calc(100% - 24px); /* så track slutter under knappen ved min/max */
-    height: 26px; /* plads til thumb */
-    margin: 0 12px; /* ~½ thumb i begge sider */
-    background: transparent;
-    display: block;
-  }
-  /* WebKit (Chrome/Edge/Safari) */
-  input[type="range"]::-webkit-slider-runnable-track {
-    height: 6px; /* smallere baggrund */
-    background: #e6e6e6;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    position: relative;
-    /* 5 lodrette tick-linjer oven på tracket ved 0%, 25%, 50%, 75%, 100% */
-    background-image:
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999);
-    background-size: 1px 100%, 1px 100%, 1px 100%, 1px 100%, 1px 100%;
-    background-position: 0% 50%, 25% 50%, 50% 50%, 75% 50%, 100% 50%;
-    background-repeat: no-repeat;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #007BFF;
-    border: 2px solid #0056b3;
-    margin-top: -7px; /* finjusteret centrering på 6px track */
-    cursor: pointer;
-  }
-  /* Firefox */
-  input[type="range"]::-moz-range-track {
-    height: 6px; /* smallere baggrund */
-    background: #e6e6e6;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    /* 5 lodrette tick-linjer oven på tracket ved 0%, 25%, 50%, 75%, 100% */
-    background-image:
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999),
-      linear-gradient(#999, #999);
-    background-size: 1px 100%, 1px 100%, 1px 100%, 1px 100%, 1px 100%;
-    background-position: 0% 50%, 25% 50%, 50% 50%, 75% 50%, 100% 50%;
-    background-repeat: no-repeat;
-  }
-  input[type="range"]::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #007BFF;
-    border: 2px solid #0056b3;
-    cursor: pointer;
-  }
-
-  /* Slider container (beholder) */
-  .slider-wrap {
-    position: relative;
-    width: 100%;
-    max-width: 700px;
-    margin: 0; /* venstrestillet */
-  }
-
-  /* Unanswered state: skjul thumb og skjul track indtil valg */
-  .slider-wrap.unanswered input[type="range"]::-webkit-slider-thumb { opacity: 0; }
-  .slider-wrap.unanswered input[type="range"]::-moz-range-thumb { opacity: 0; }
-  .slider-wrap.unanswered input[type="range"]::-webkit-slider-runnable-track { opacity: 0; }
-  .slider-wrap.unanswered input[type="range"]::-moz-range-track { opacity: 0; }
 
   /* Klikbare Likert-labels */
   .likert-labels {
@@ -262,25 +186,6 @@ select:invalid {
     border: 1px solid #007BFF;
     color: #0b3d91;
     font-weight: 600;
-  }
-  .ticks-overlay {
-    pointer-events: none;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 6px; /* matcher track-højde */
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    align-items: stretch; /* fyld hele track-højden */
-  }
-  .ticks-overlay span {
-    justify-self: center;
-    width: 1px;
-    height: 100%; /* præcis samme højde som track */
-    background: #999;
-    border-radius: 1px;
   }
 
   td label {
@@ -339,15 +244,6 @@ select:invalid {
       <option value="Basic">Basic</option>
       <option value="Sælger">Sælger</option>
       <option value="Leder">Leder</option>
-    </select>
-  </div>
-
-  <div class="intro-field">
-  <label for="inputSpoergeramme">Spørgeramme: <span class="required">*</span></label>
-    <select id="inputSpoergeramme" required>
-        <option value="Likert">Likert</option>
-        <option value="Pro">Pro</option>
-        <option value="Oprindelig">Oprindelig</option>
     </select>
   </div>
 
@@ -433,92 +329,67 @@ select:invalid {
   </form>
 
   <script>
-let discMap = {};
-let questions = [];
-let answers = []; // Gemmer DISC-svar som f.eks. { mest: "D", mindst: "S" }
 let respondentInfo = {};
 let likertItems = [];
 let likertQuestions = [];
 let likertAnswers = [];
 let likertCurrent = 0;
+let surveyStartTs = null;
 
-// Kun læs og forbered spørgsmålene – men vis dem først senere
-function fetchQuestions(ramme) {
-  let path = ramme === "Pro" ? "disc_udsagn_pro.csv" : "disc_udsagn_oprindelig.csv";
+function fetchLikertItems() {
+  const path = "disc_udsagn_2.2.csv";
 
-  return fetch(path)
-  .then(response => response.text())
-  .then(data => {
-    const lines = data.trim().split('\n').slice(1); // skip header line
-    questions = [];
-
-    lines.forEach((line, idx) => {
-  const lastComma = line.lastIndexOf(",");
-  if (lastComma === -1) return;
-
-  const udsagn = line.substring(0, lastComma).trim().replace(/^"|"$/g, '');
-  const disc = line.substring(lastComma + 1).trim();
-
-  if (!udsagn || !disc || !"DISC".includes(disc)) return;
-
-  const questionIndex = Math.floor(idx / 4);
-  if (!questions[questionIndex]) {
-    questions[questionIndex] = {
-      text: `Spørgsmål ${questionIndex + 1}: Hvilket udsagn passer bedst (MEST) og dårligst (MINDST) på dig?`,
-      options: []
-    };
+  // Robust splitting af CSV-linje med understøttelse af anførselstegn og kommaer i tekst
+  function splitCSVLine(line) {
+    const cols = [];
+    let cur = "";
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          cur += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (ch === ',' && !inQuotes) {
+        cols.push(cur);
+        cur = "";
+      } else {
+        cur += ch;
+      }
+    }
+    cols.push(cur);
+    return cols;
   }
 
-  questions[questionIndex].options.push({ text: udsagn, disc });
-});
+  function toBool(val) {
+    if (val == null) return false;
+    const v = String(val).trim().toLowerCase();
+    return v === "true" || v === "1" || v === "ja" || v === "yes" || v === "y" || v === "x";
+  }
 
-    // Fjern eventuelle tomme pladser (hvis CSV ikke er perfekt delt i 4)
-    questions = questions.filter(Boolean);
-
-    // Bland rækkefølgen af spørgsmål (Fisher–Yates)
-    for (let i = questions.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [questions[i], questions[j]] = [questions[j], questions[i]];
-    }
-
-    // Bland rækkefølgen af udsagn inden i hvert spørgsmål
-    questions.forEach(q => {
-      for (let i = q.options.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
-      }
-    });
-
-    // Opdater spørgsmålstitler så de matcher den nye rækkefølge
-    questions.forEach((q, i) => {
-      q.text = `Spørgsmål ${i + 1}: Hvilket udsagn passer bedst (MEST) og dårligst (MINDST) på dig?`;
-    });
-
-    console.log("DISC-kort indlæst:", questions.length, "spørgsmål");
-  })
-  .catch(err => {
-    console.error("Kunne ikke hente CSV:", err);
-    alert("Der opstod en fejl ved indlæsning af spørgerammen.");
-  });
-
-}
-
-// Likert: hent udsagn fra disc_udsagn_2.0.csv
-function fetchLikertItems() {
-  const path = "disc_udsagn_2.0.csv";
   return fetch(path)
     .then(response => response.text())
     .then(data => {
-      const lines = data.trim().split('\n').slice(1); // skip header
+      const rawLines = data.trim().split('\n');
+      // antag at første linje er header
+      const lines = rawLines.slice(1);
       likertItems = [];
       lines.forEach(line => {
-        const lastComma = line.lastIndexOf(",");
-        if (lastComma === -1) return;
-        const udsagn = line.substring(0, lastComma).trim().replace(/^"|"$/g, '');
-        const disc = line.substring(lastComma + 1).trim();
+        if (!line.trim()) return;
+        const cols = splitCSVLine(line);
+        // Forvent 4 kolonner: udsagn, DISC, reverse, test
+        if (cols.length < 4) return;
+        const udsagn = String(cols[0] || "").trim().replace(/^"|"$/g, '');
+        const disc = String(cols[1] || "").trim().toUpperCase();
+        const reverse = toBool(cols[2]);
+        const test = toBool(cols[3]);
         if (!udsagn) return;
-        likertItems.push({ text: udsagn, disc });
+        likertItems.push({ text: udsagn, disc, reverse, test });
       });
+
       // Bland rækkefølgen for at undgå ordensbias
       for (let i = likertItems.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -532,11 +403,13 @@ function fetchLikertItems() {
           likertQuestions.push({ items: group });
         }
       }
-      // Forbered svarstruktur: to værdier pr. udsagn (naturlig/arbejde)
+      // Forbered svarstruktur: to værdier pr. udsagn (naturlig/arbejde) og bær reverse/test med
       likertAnswers = likertQuestions.map(q =>
         q.items.map(item => ({
           text: item.text,
           disc: item.disc || "",
+          reverse: !!item.reverse,
+          test: !!item.test,
           naturlig: null,
           arbejde: null
         }))
@@ -672,7 +545,7 @@ function renderLikertSurvey() {
   container.appendChild(wrapper);
 }
 
-// Likert: indsamling og download af JSON (to svar pr. udsagn)
+// Likert: indsamling og download af JSON som normaliserede scores (0-100) pr. DISC-dimension + lineær tidsvaliditet
 async function downloadLikertJSON() {
   // Valider alle spørgsmål
   for (let q = 0; q < likertAnswers.length; q++) {
@@ -688,33 +561,156 @@ async function downloadLikertJSON() {
 
   if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
 
-  // Saml svar
-  const likertResponses = likertAnswers.flatMap((rows, qIndex) =>
-    rows.map((row, rIndex) => ({
-      question: qIndex + 1,
-      index: rIndex + 1,
-      text: row.text,
-      disc: row.disc || "",
-      naturlig: row.naturlig,
-      arbejde: row.arbejde
-    }))
-  );
+  // Summer pr. DISC-dimension for Arbejde (1) og Naturlig (2) – udelad test-items
+  const sumArbejde = { D: 0, I: 0, S: 0, C: 0 };
+  const sumNaturlig = { D: 0, I: 0, S: 0, C: 0 };
+  const countPerDim = { D: 0, I: 0, S: 0, C: 0 };
 
-  // Bevar score-struktur for kompatibilitet (0-værdier som placeholder)
-  const score = { D1: 0, I1: 0, S1: 0, C1: 0, D2: 0, I2: 0, S2: 0, C2: 0 };
+  // Test- og modsigelsesstraf
+  let testPenalty = 0;
+  let contradictionPenalty = 0;
+
+  const contradict = {
+    arbejde: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } },
+    naturlig: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } }
+  };
+
+  // Gå igennem alle Likert-svar og aggreger
+  for (let q = 0; q < likertQuestions.length; q++) {
+    const items = likertQuestions[q].items;
+    const rows = likertAnswers[q];
+    for (let r = 0; r < rows.length; r++) {
+      const row = rows[r];
+      const item = items[r] || row; // fallback hvis strukturen er identisk
+      const dim = (row.disc || "").toUpperCase();
+      if (!["D", "I", "S", "C"].includes(dim)) continue;
+
+      const isRev = !!row.reverse;
+      const isTest = !!row.test;
+
+      const vArbejde = Number(row.arbejde);
+      const vNaturlig = Number(row.naturlig);
+
+      // Test-straf: 7 point pr. kolonne ved Enig/Meget enig (eller ved Uenig/Meget uenig hvis reverse+test)
+      if (isTest) {
+        if (!isRev) {
+          if (vArbejde >= 4) testPenalty += 7;
+          if (vNaturlig >= 4) testPenalty += 7;
+        } else {
+          if (vArbejde <= 2) testPenalty += 7;
+          if (vNaturlig <= 2) testPenalty += 7;
+        }
+      } else {
+        // DISC-summer: brug omvendt skala hvis reverse
+        const sArbejde = isRev ? (6 - vArbejde) : vArbejde;
+        const sNaturlig = isRev ? (6 - vNaturlig) : vNaturlig;
+
+        sumArbejde[dim] += sArbejde;
+        sumNaturlig[dim] += sNaturlig;
+        // Tæl kun ikke-test items for normalisering
+        countPerDim[dim] += 1;
+      }
+
+      // Modsigelsesstraf: Meget enig (5) på både normal og reverse for samme bogstav pr. kolonne
+      if (vArbejde === 5) {
+        if (isRev) contradict.arbejde[dim].rev5 = true;
+        else contradict.arbejde[dim].norm5 = true;
+      }
+      if (vNaturlig === 5) {
+        if (isRev) contradict.naturlig[dim].rev5 = true;
+        else contradict.naturlig[dim].norm5 = true;
+      }
+    }
+  }
+
+  // Normaliser til 0-100 baseret på maks = antal (ikke-test) udsagn for dimensionen * 5
+  const normalize = (sum, count) => {
+    if (!count || count <= 0) return 0;
+    const max = count * 5;
+    return Math.round((sum / max) * 100);
+  };
+
+  const score = {
+    // Arbejde = 1
+    D1: normalize(sumArbejde.D, countPerDim.D),
+    I1: normalize(sumArbejde.I, countPerDim.I),
+    S1: normalize(sumArbejde.S, countPerDim.S),
+    C1: normalize(sumArbejde.C, countPerDim.C),
+    // Naturlig = 2
+    D2: normalize(sumNaturlig.D, countPerDim.D),
+    I2: normalize(sumNaturlig.I, countPerDim.I),
+    S2: normalize(sumNaturlig.S, countPerDim.S),
+    C2: normalize(sumNaturlig.C, countPerDim.C)
+  };
+
+  // Lineær tidsstraf (max 50) mellem 2:30 og 5:00 min – lang tid straffes ikke
+  const finishedAt = Date.now();
+  const durationSec = Math.max(0, Math.round((finishedAt - (surveyStartTs || finishedAt)) / 1000));
+  const minSec = 150; // 2:30
+  const maxSec = 300; // 5:00
+  let timePenalty;
+  if (durationSec <= minSec) {
+    timePenalty = 50;
+  } else if (durationSec >= maxSec) {
+    timePenalty = 0;
+  } else {
+    timePenalty = 50 * (maxSec - durationSec) / (maxSec - minSec);
+  }
+
+  // Ekstra moderat straf for modsætningsakser (D↔S og I↔C):
+  // - Brug gennemsnit af Arbejde (1) og Naturlig (2) pr. dimension.
+  // - Straf ved høj-høj (>=65) eller lav-lav (<=35), lineært op til 10 pr. akse (maks 20 i alt).
+  const mean = (a, b) => (Number(a || 0) + Number(b || 0)) / 2;
+  const Dm = mean(score.D1, score.D2);
+  const Im = mean(score.I1, score.I2);
+  const Sm = mean(score.S1, score.S2);
+  const Cm = mean(score.C1, score.C2);
+
+  const highThr = 65;
+  const lowThr = 35;
+
+  function pairPenalty(a, b) {
+    let p = 0;
+    if (a >= highThr && b >= highThr) {
+      p = ((Math.min(a, b) - highThr) / (100 - highThr)) * 10;
+    } else if (a <= lowThr && b <= lowThr) {
+      p = ((lowThr - Math.max(a, b)) / lowThr) * 10;
+    }
+    // Begræns til [0,10]
+    return Math.max(0, Math.min(10, p));
+  }
+
+  // Kun beregn akse-straf, hvis der faktisk er udsagn for de pågældende dimensioner
+  const hasDS = (countPerDim.D > 0) && (countPerDim.S > 0);
+  const hasIC = (countPerDim.I > 0) && (countPerDim.C > 0);
+  const penaltyDS = hasDS ? pairPenalty(Dm, Sm) : 0;
+  const penaltyIC = hasIC ? pairPenalty(Im, Cm) : 0;
+  const axisPenalty = Math.min(20, Math.round(penaltyDS + penaltyIC));
+
+  // Modsigelsesstraf: 7 point pr. dimension pr. kolonne med norm5 & rev5
+  ["arbejde", "naturlig"].forEach(ctx => {
+    (["D", "I", "S", "C"]).forEach(dim => {
+      const flags = contradict[ctx][dim];
+      if (flags.norm5 && flags.rev5) contradictionPenalty += 7;
+    });
+  });
+
+  const totalPenalty = Math.round(timePenalty) + axisPenalty + testPenalty + contradictionPenalty;
+  const validitetsscore = Math.max(0, Math.round(100 - totalPenalty));
 
   const result = {
     ...respondentInfo,
+    startTid: surveyStartTs ? new Date(surveyStartTs).toISOString() : null,
+    slutTid: new Date(finishedAt).toISOString(),
+    besvarelsestidSek: durationSec,
+    validitetsscore,
     score,
-    likert: {
-      scale: [
-        { value: 1, label: "Meget uenig" },
-        { value: 2, label: "Uenig" },
-        { value: 3, label: "Både/og" },
-        { value: 4, label: "Enig" },
-        { value: 5, label: "Meget enig" }
-      ],
-      responses: likertResponses
+    penaltyBreakdown: {
+      timePenalty: Math.round(timePenalty),
+      axisPenalty,
+      testPenalty,
+      contradictionPenalty,
+      totalPenalty
     }
   };
 
@@ -754,16 +750,17 @@ function startSurvey() {
   const fornavn = document.getElementById("inputFornavn").value;
   const efternavn = document.getElementById("inputEfternavn").value;
   const profiltype = document.getElementById("inputProfiltype").value;
-  const spoergeramme = document.getElementById("inputSpoergeramme").value;
   const koen = document.getElementById("inputKoen").value;
   const firma = document.getElementById("inputFirma").value;
   const email = document.getElementById("inputEmail").value;
   const samtykke = document.getElementById("inputSamtykke").checked;
 
-  if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !spoergeramme || !samtykke) {
+  if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !samtykke) {
     alert("Du skal udfylde alle felter og give samtykke for at fortsætte.");
     return;
   }
+
+  const spoergeramme = "Likert";
 
   respondentInfo = {
     dato,
@@ -782,303 +779,14 @@ document.getElementById("prepScreen").style.display = "block";
 }
 
 function showSurvey() {
+  surveyStartTs = Date.now();
   document.getElementById("prepScreen").style.display = "none";
   document.getElementById("questions").style.display = "block";
 
-  if (respondentInfo.spoergeramme === "Likert") {
-    fetchLikertItems().then(() => {
-      renderLikertSurvey();
-    });
-  } else {
-    fetchQuestions(respondentInfo.spoergeramme).then(() => {
-      renderQuestions();
-      setupValidation();
-    });
-  }
-}
-
-
-function setupValidation() {
-  questions.forEach((q, i) => {
-    const mestInputs = document.querySelectorAll(`input[name='mest${i}']`);
-    const mindstInputs = document.querySelectorAll(`input[name='mindst${i}']`);
-
-    mestInputs.forEach(input => {
-      input.addEventListener('change', () => {
-        mindstInputs.forEach(min => {
-          if (min.value === input.value && input.checked) {
-            min.checked = false; // fjern MINDST hvis MEST er valgt samme sted
-          }
-        });
-      });
-    });
-
-    mindstInputs.forEach(input => {
-      input.addEventListener('change', () => {
-        mestInputs.forEach(mest => {
-          if (mest.value === input.value && input.checked) {
-            mest.checked = false; // fjern MEST hvis MINDST er valgt samme sted
-          }
-        });
-      });
-    });
+  fetchLikertItems().then(() => {
+    renderLikertSurvey();
   });
 }
-
-function renderQuestions() {
-  const container = document.getElementById("questions");
-  container.innerHTML = "";
-  showQuestion(0);
-}
-
-function showQuestion(index) {
-  const q = questions[index];
-  const container = document.getElementById("questions");
-  container.innerHTML = "";
-
-  const div = document.createElement("div");
-  div.classList.add("question");
-  div.setAttribute("id", `question-${index}`);
-  div.innerHTML = `<p><strong>${q.text}</strong></p>`;
-
-  const table = document.createElement("table");
-  table.innerHTML = `
-    <tr>
-      <th>Udsagn</th>
-      <th>MEST</th>
-      <th>MINDST</th>
-    </tr>
-  `;
-
-  q.options.forEach((opt, j) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${opt.text}</td>
-      <td><input type="radio" name="mest${index}" value="${opt.text}" data-disc="${opt.disc}" id="mest-${index}-${j}"></td>
-      <td><input type="radio" name="mindst${index}" value="${opt.text}" data-disc="${opt.disc}" id="mindst-${index}-${j}"></td>
-    `;
-    table.appendChild(row);
-  });
-
-  div.appendChild(table);
-
-  // Automatisk gensidig udelukkelse
-  setTimeout(() => {
-    const mestRadios = document.querySelectorAll(`input[name='mest${index}']`);
-    const mindstRadios = document.querySelectorAll(`input[name='mindst${index}']`);
-
-    mestRadios.forEach((mest) => {
-      mest.addEventListener("change", () => {
-        mindstRadios.forEach((mindst) => {
-          if (mindst.value === mest.value && mest.checked) {
-            mindst.checked = false;
-          }
-        });
-      });
-    });
-
-    mindstRadios.forEach((mindst) => {
-      mindst.addEventListener("change", () => {
-        mestRadios.forEach((mest) => {
-          if (mest.value === mindst.value && mindst.checked) {
-            mest.checked = false;
-          }
-        });
-      });
-    });
-  }, 50);
-
-  const nextBtn = document.createElement("button");
-  nextBtn.textContent = index === questions.length - 1 ? "Afslut og indsend" : "Næste";
-  nextBtn.className = "submit-button";
-
-  nextBtn.onclick = () => {
-  const mest = document.querySelector(`input[name='mest${index}']:checked`);
-  const mindst = document.querySelector(`input[name='mindst${index}']:checked`);
-
-  if (!mest || !mindst) {
-    alert("Du skal vælge både MEST og MINDST før du kan fortsætte.");
-    return;
-  }
-
-  const mestDISC = mest.dataset.disc;
-  const mindstDISC = mindst.dataset.disc;
-
-  answers[index] = { mest: mestDISC, mindst: mindstDISC }; // 💾 gem svar
-
-  if (index + 1 < questions.length) {
-    showQuestion(index + 1);
-  } else {
-    downloadJSON(); // kald direkte
-  }
-};
-
-  div.appendChild(nextBtn);
-  container.appendChild(div);
-}
-
-function createQuestionElement(index) {
-  const q = questions[index];
-  const div = document.createElement("div");
-  div.classList.add("question");
-  div.setAttribute("id", `question-${index}`);
-  div.innerHTML = `<p><strong>${q.text}</strong></p>`;
-
-  const table = document.createElement("table");
-  table.innerHTML = `
-    <tr>
-      <th>Udsagn</th>
-      <th>MEST</th>
-      <th>MINDST</th>
-    </tr>
-  `;
-
-  q.options.forEach((opt, j) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${opt.text}</td>
-      <td><input type="radio" name="mest${index}" value="${opt.text}" data-disc="${opt.disc}"></td>
-      <td><input type="radio" name="mindst${index}" value="${opt.text}" data-disc="${opt.disc}"></td>
-    `;
-    table.appendChild(row);
-  });
-
-  div.appendChild(table);
-
-  // overvåg MEST og MINDST valg
-  div.addEventListener("change", () => {
-    const mest = document.querySelector(`input[name='mest${index}']:checked`);
-    const mindst = document.querySelector(`input[name='mindst${index}']:checked`);
-    if (mest && mindst) {
-      if (index + 1 < questions.length) {
-        const next = document.getElementById(`question-${index + 1}`);
-        if (!next) {
-          const nextQuestion = createQuestionElement(index + 1);
-          document.getElementById("questions").appendChild(nextQuestion);
-          nextQuestion.scrollIntoView({ behavior: "smooth" });
-        }
-      } else {
-        document.getElementById("submitBtn").style.display = "block";
-        document.getElementById("submitBtn").scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  });
-
-  return div;
-}
-
-
-async function downloadJSON() {
-  if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
-
-  const score = { D1: 0, I1: 0, S1: 0, C1: 0, D2: 0, I2: 0, S2: 0, C2: 0 };
-
-  answers.forEach(ans => {
-  if (ans?.mest && score[ans.mest + '1'] !== undefined) {
-    score[ans.mest + '1']++;
-  }
-  if (ans?.mindst && score[ans.mindst + '2'] !== undefined) {
-    score[ans.mindst + '2']++;
-  }
-});
-
-
-
-  const result = {
-    ...respondentInfo,
-    score
-  };
-
-  const jsonBlob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
-
-  // Brug moderne file picker hvis muligt
-  if (window.showSaveFilePicker) {
-    const handle = await window.showSaveFilePicker({
-      suggestedName: "disc-resultat.json",
-      types: [{
-        description: "JSON-fil",
-        accept: { "application/json": [".json"] }
-      }]
-    });
-    const writable = await handle.createWritable();
-    await writable.write(jsonBlob);
-    await writable.close();
-  } else {
-    // fallback til klassisk download
-    const url = URL.createObjectURL(jsonBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "disc-resultat.json";
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
-  document.getElementById("questions").style.display = "none";
-  document.getElementById("thankYouScreen").style.display = "block";
-
-}
-
-async function uploadToGitHub() {
-  if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
-
-  const score = { D1: 0, I1: 0, S1: 0, C1: 0, D2: 0, I2: 0, S2: 0, C2: 0 };
-
-  answers.forEach(ans => {
-    if (ans?.mest && score[ans.mest + '1'] !== undefined) {
-      score[ans.mest + '1']++;
-    }
-    if (ans?.mindst && score[ans.mindst + '2'] !== undefined) {
-      score[ans.mindst + '2']++;
-    }
-  });
-
-  const result = {
-    ...respondentInfo,
-    score
-  };
-
-  // 🔐 GitHub config
-  const GITHUB_USERNAME = "lukasbjohansen";
-  const GITHUB_REPO = "DISC";
-  const GITHUB_TOKEN = "ghp_xxxDIN_PERSONLIGE_TOKENxxx"; // 👈 Indsæt sikkert!
-  const FILE_PATH = `input/disc-${Date.now()}.json`;
-
-  const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${FILE_PATH}`;
-
-  const encodedContent = btoa(
-  new TextEncoder().encode(JSON.stringify(result, null, 2))
-    .reduce((data, byte) => data + String.fromCharCode(byte), '')
-);
-
-  const body = {
-    message: `New DISC submission by ${respondentInfo.fornavn} ${respondentInfo.efternavn}`,
-    content: encodedContent,
-    committer: {
-      name: "DISC Bot",
-      email: "bot@coachers.dk"
-    }
-  };
-
-  const response = await fetch(apiUrl, {
-    method: "PUT",
-    headers: {
-      "Authorization": `Bearer ${GITHUB_TOKEN}`,
-      "Accept": "application/vnd.github.v3+json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-
-  if (response.ok) {
-    alert("Svar indsendt og gemt på GitHub!");
-    location.reload();
-  } else {
-    const error = await response.json();
-    console.error("GitHub upload-fejl:", error);
-    alert("Der opstod en fejl under indsendelsen.");
-  }
-}
-
 
 window.addEventListener("DOMContentLoaded", () => {
   const today = new Date();
