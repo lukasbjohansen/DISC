@@ -696,14 +696,14 @@ async function downloadLikertJSON() {
   });
 
   const totalPenalty = Math.round(timePenalty) + axisPenalty + testPenalty + contradictionPenalty;
-  const validitetsscore = Math.max(0, Math.round(100 - totalPenalty));
+  const validitet = Math.max(0, Math.round(100 - totalPenalty));
 
   const result = {
     ...respondentInfo,
     startTid: surveyStartTs ? new Date(surveyStartTs).toISOString() : null,
     slutTid: new Date(finishedAt).toISOString(),
     besvarelsestidSek: durationSec,
-    validitetsscore,
+    validitet,
     score,
     penaltyBreakdown: {
       timePenalty: Math.round(timePenalty),
