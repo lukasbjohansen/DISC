@@ -1,0 +1,97 @@
+Udsagn,DISC,reverse,test
+"Jeg går hurtigt til handling, også når alt ikke er afklaret.",D,FALSE,FALSE
+"Jeg tager styringen, hvis jeg synes tingene går for langsomt.",D,FALSE,FALSE
+"Jeg sætter høje mål, selv om de kræver ekstra pres.",D,FALSE,FALSE
+"Jeg presser på for at komme videre, hvis andre tøver.",D,FALSE,FALSE
+"Jeg udfordrer beslutninger, hvis jeg er uenig.",D,FALSE,FALSE
+"Jeg er handlingsorienteret, også selv om alle detaljer ikke er på plads.",D,FALSE,FALSE
+"Jeg holder fast i min plan, selv ved modstand.",D,FALSE,FALSE
+"Jeg træffer beslutninger hurtigt, også under pres.",D,FALSE,FALSE
+Jeg vælger tempo frem for perfektion.,D,FALSE,FALSE
+Jeg konfronterer problemer direkte.,D,FALSE,FALSE
+"Jeg nyder, når andre har et godt tempo",D,FALSE,FALSE
+"Jeg styrer gerne samtaler og møder, når der mistes fokus",D,FALSE,FALSE
+"Jeg sætter retningen, uden nødvendigvis at involvere alle",D,FALSE,FALSE
+Jeg afslutter opgaver hurtigt frem for grundigt,D,FALSE,FALSE
+"Jeg siger min mening, selv om den er upopulær.",D,FALSE,FALSE
+"Jeg bryder ind, hvis jeg synes, vi spilder tiden.",D,FALSE,FALSE
+Jeg tager gerne styring og ansvar,D,FALSE,FALSE
+"Jeg holder fast i tempoet, når andre vil sænke det.",D,FALSE,FALSE
+"Jeg tager ansvar, selv om det kan give modstand",D,FALSE,FALSE
+Jeg vælger hurtige beslutninger frem for lange analyser.,D,FALSE,FALSE
+"Jeg driver gerne tingene fremad, også når stemningen halter",D,FALSE,FALSE
+"Jeg tager gerne styring, hvis ting går i stå",D,FALSE,FALSE
+"Jeg arbejder bedst, når jeg har kontrol",D,FALSE,FALSE
+Jeg udfordrer andre for at nå målet.,D,FALSE,FALSE
+"Jeg deler mine idéer, også når de ikke er helt færdige.",I,FALSE,FALSE
+Jeg starter gerne samtaler med mennesker jeg ikke kender.,I,FALSE,FALSE
+"Jeg skaber en god stemning, også når en opgave er seriøs.",I,FALSE,FALSE
+Jeg bruger energi på at få andre med på mine forslag.,I,FALSE,FALSE
+Jeg kan lide at få anerkendelse for mine bidrag,I,FALSE,FALSE
+Jeg holder kontakten godt med mange på én gang.,I,FALSE,FALSE
+Jeg inspirerer andre til at prøve noget nyt.,I,FALSE,FALSE
+"Jeg bruger gerne humor, også i pressede situationer.",I,FALSE,FALSE
+"Jeg deltager i sociale aktiviteter, selvom jeg har travlt",I,FALSE,FALSE
+Jeg prøver at gøre møder mere levende.,I,FALSE,FALSE
+Jeg finder hurtigt fælles emner med fremmede.,I,FALSE,FALSE
+"Jeg taler godt, selv om jeg ikke er helt forberedt.",I,FALSE,FALSE
+Jeg fortæller historier for at få folk engageret.,I,FALSE,FALSE
+Jeg søger samarbejde frem for at lave ting på egen hånd,I,FALSE,FALSE
+Det er vigtigt for mig at være vellidt.,I,FALSE,FALSE
+"Jeg forsøger at motivere andre, også når de er tilbageholdende",I,FALSE,FALSE
+"Jeg skaber optimisme, selv når ting kan se svære ud",I,FALSE,FALSE
+"Jeg siger gerne ja til muligheder, selv uden at kende detaljerne.",I,FALSE,FALSE
+Jeg foretrækker møder med mennesker frem for skriftlig kontakt,I,FALSE,FALSE
+Jeg påvirker beslutninger gennem min personlighed.,I,FALSE,FALSE
+Jeg nyder at være i centrum i grupper,I,FALSE,FALSE
+Jeg bruger energi på at inddrage alle i en diskussion.,I,FALSE,FALSE
+"Jeg skaber kontakt, også selvom kan virke tilbageholdende",I,FALSE,FALSE
+"Jeg fungerer bedst, når jeg kan udtrykke mig frit.",I,FALSE,FALSE
+"Jeg holder helst fast i en plan, selvom nye ting opstår",S,FALSE,FALSE
+Jeg foretrækker stabile rammer frem for hyppige ændringer.,S,FALSE,FALSE
+"Jeg bevarer roen, selv når tempoet stiger.",S,FALSE,FALSE
+"Jeg prioriterer harmoni, selv om det kan forsinke tingene.",S,FALSE,FALSE
+"Jeg hjælper andre, også når jeg selv er presset.",S,FALSE,FALSE
+"Jeg accepterer ændringer, men i et gradvist tempo",S,FALSE,FALSE
+Jeg vil ikke være prøveklud for nye ting og løsninger,S,FALSE,FALSE
+Jeg har et stort fokus på at tilbyde hjælp til andre,S,FALSE,FALSE
+"Jeg tilpasser mig, selvom jeg godt kan være uenig",S,FALSE,FALSE
+Jeg søger tryghed i mine relationer,S,FALSE,FALSE
+"Jeg undgår konflikter, hvis det er muligt.",S,FALSE,FALSE
+"Jeg foretrækker, at opgaver udføres i et roligt tempo.",S,FALSE,FALSE
+"Jeg bliver helst i opgaver, til de er afsluttede",S,FALSE,FALSE
+"Jeg har brug for reflektion, før jeg handler.",S,FALSE,FALSE
+"Jeg undgår helst forandringer, uden at jeg kan forberede mig på dem",S,FALSE,FALSE
+"Jeg støtter andre, også uden at forvente noget retur",S,FALSE,FALSE
+"Jeg beskytter det, der fungerer godt.",S,FALSE,FALSE
+"Jeg holder fast i vaner, der skaber stabilitet.",S,FALSE,FALSE
+"Jeg trives bedst, når tingene er forudsigelige.",S,FALSE,FALSE
+"Jeg er tålmodig, selvom andre bliver utålmodige.",S,FALSE,FALSE
+Jeg undgår at presse andre for hårdt.,S,FALSE,FALSE
+Jeg værdsætter et roligt miljø omkring mig,S,FALSE,FALSE
+Jeg vælger stabilitet frem for spænding.,S,FALSE,FALSE
+"Jeg har færre relationer, men langvarige",S,FALSE,FALSE
+"Jeg følger processer, også når der er tidspres.",C,FALSE,FALSE
+Jeg dobbelttjekker mine ting for at undgå fejl.,C,FALSE,FALSE
+"Jeg holder mig til reglerne, selvom andre slækker på dem",C,FALSE,FALSE
+"Jeg fokuserer på detaljer, fordi det giver kvalitet",C,FALSE,FALSE
+"Jeg afslutter opgaver, før jeg starter nye.",C,FALSE,FALSE
+Jeg undgår at improvisere og vil hellere planlægge først,C,FALSE,FALSE
+Jeg dokumenterer mit arbejde grundigt,C,FALSE,FALSE
+"Jeg sikrer, at standarder og regler bliver fulgt",C,FALSE,FALSE
+"Jeg holder fast i planen, og undgår spontanitet der bryder planen",C,FALSE,FALSE
+"Jeg retter gerne fejl, også de mindre væsentlige",C,FALSE,FALSE
+"Jeg undgår genveje, hvis de medfører fejl",C,FALSE,FALSE
+"Jeg analyserer, før jeg træffer beslutninger.",C,FALSE,FALSE
+"Jeg bruger tjeklister for at sikre, da det sikrer kvalitet",C,FALSE,FALSE
+"Jeg arbejder systematisk, også med enkle opgaver.",C,FALSE,FALSE
+"Jeg sikrer, at arbejdet er korrekt, selv hvis det tager længere tid.",C,FALSE,FALSE
+Jeg opbevarer dokumentation til senere brug.,C,FALSE,FALSE
+Jeg følger faste procedurer og regler,C,FALSE,FALSE
+"Jeg undgår ændringer, der ikke er testet ordentligt",C,FALSE,FALSE
+"Jeg gennemgår mit arbejde, inden jeg afleverer det.",C,FALSE,FALSE
+Jeg prioriterer præcision frem for hurtighed.,C,FALSE,FALSE
+Jeg har større fokus på kvalitet og præcision end på at komme hurtigt fremad,C,FALSE,FALSE
+Jeg har stor orden i mine opgaver.,C,FALSE,FALSE
+"Jeg trives bedst, når jeg har klare retningslinjer.",C,FALSE,FALSE
+"Jeg undersøger fakta, før jeg giver svar.",C,FALSE,FALSE
