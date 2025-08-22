@@ -279,7 +279,7 @@ select:invalid {
   </div>
 
   <button onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
-  <p style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">Denne side er senest ændret d. 23. august 2025 (01.29)</p>
+  <p style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">Denne side er senest ændret d. 23. august 2025 (01.31)</p>
 </div>
   <div id="prepScreen" class="prep-box" style="display: none;">
   <h2>Vigtige forberedelser</h2>
@@ -338,7 +338,7 @@ let likertCurrent = 0;
 let surveyStartTs = null;
 
 function fetchLikertItems() {
-  const path = "disc_udsagn_2.3.2.csv";
+  const path = "disc_udsagn_2.3.3.csv";
 
   // Robust splitting af CSV-linje med understøttelse af anførselstegn og kommaer i tekst
   function splitCSVLine(line) {
@@ -845,5 +845,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
