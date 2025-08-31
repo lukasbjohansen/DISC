@@ -1,850 +1,960 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>DISC Analyse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-  #introForm {
-  max-width: 500px;
-  margin: 40px auto;
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+    :root {
+      --bg: #f8f8f8;
+      --card: #ffffff;
+      --text: #333;
+      --muted: #777;
+      --border: #c7c7c7;
+      --primary: #007BFF;
+      --primary-dark: #0056b3;
+      --pill-bg: #f6f8fb;
+      --pill-border: #cfd8e3;
+      --pill-hover: #eef3f9;
+      --pill-active: #e6eef8;
+      --pill-selected-bg: #e7f1ff;
+      --pill-selected-text: #0b3d91;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-#introForm h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: var(--bg);
+      color: var(--text);
+    }
 
-.required {
-  color: red;
-  font-weight: bold;
-  margin-left: 4px;
-}
-.prep-box {
-  max-width: 600px;
-  margin: 40px auto;
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
-}
+    #introForm {
+      max-width: 500px;
+      margin: 40px auto;
+      background-color: var(--card);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
 
-.prep-box h2,
-.prep-box h3 {
-  text-align: center;
-  margin-top: 20px;
-}
+    #introForm h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-.prep-box ul {
-  padding-left: 20px;
-}
+    .required {
+      color: red;
+      font-weight: bold;
+      margin-left: 4px;
+    }
 
-.prep-box p {
-  margin: 10px 0;
-}
+    .prep-box {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: var(--card);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      line-height: 1.6;
+    }
 
+    .prep-box h2,
+    .prep-box h3 {
+      text-align: center;
+      margin-top: 20px;
+    }
 
-.intro-field {
-  display: grid;
-  grid-template-columns: 130px 1fr;
-  gap: 12px;
-  align-items: start;
-  margin-bottom: 16px;
-}
-select:invalid {
-  border-color: red;
-}
+    .prep-box ul {
+      padding-left: 20px;
+    }
 
+    .prep-box p {
+      margin: 10px 0;
+    }
 
-.intro-field label {
-  flex: 0 0 120px;
-  font-weight: bold;
-}
+    .intro-field {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 16px;
+    }
 
-.intro-field input {
-  flex: 1;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.intro-field p {
-	margin: 0;
-	font-size: 12px;
-	font-weight: 100;
-}
+    .intro-field label {
+      font-weight: bold;
+    }
 
-  body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    background-color: #f8f8f8;
-  }
+    .intro-field input,
+    .intro-field select {
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-  h1 {
-    text-align: center;
-    color: #333;
-  }
+    /* Keep your original paragraph styling inside intro fields */
+    .intro-field p {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 100;
+    }
 
-  .question {
-    background: #fff;
-    padding: 30px;
-    margin: 20px auto;
-    max-width: 1200px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  .intro-field select {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  }
+    select:invalid {
+      border-color: red;
+    }
 
+    .question {
+      background: var(--card);
+      padding: 30px;
+      margin: 20px auto;
+      max-width: 1200px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: auto;
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
 
-  td, th {
-    padding: 10px;
-    text-align: left;
-    vertical-align: middle;
-  }
+    td, th {
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
 
-  td:first-child {
-    width: 50%;
-  }
+    td:first-child {
+      width: 50%;
+    }
 
-  td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) {
-    width: 25%;
-    text-align: left;
-  }
+    td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) {
+      width: 25%;
+      text-align: left;
+    }
 
-  /* Dobbelte vertikale streger mellem de tre kolonner */
-  td:nth-child(2), th:nth-child(2) {
-    border-left: 1px solid #c7c7c7;
-  }
-  td:nth-child(3), th:nth-child(3) {
-    border-left: 1px solid #c7c7c7;
-  }
+    td:nth-child(2), th:nth-child(2) {
+      border-left: 1px solid var(--border);
+    }
+    td:nth-child(3), th:nth-child(3) {
+      border-left: 1px solid var(--border);
+    }
 
-  th {
-    background-color: #efefef;
-  }
+    th {
+      background-color: #efefef;
+    }
 
-  input[type="radio"] {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    accent-color: #007BFF;
-    transform: translateY(2px);
-  }
+    /* Clickable Likert "pills" */
+    .likert-labels {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .likert-labels span {
+      padding: 8px 10px;
+      border-radius: 9999px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+      color: var(--text);
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .likert-labels span:hover {
+      background: var(--pill-hover);
+      border-color: #b8c6d8;
+    }
+    .likert-labels span:active {
+      background: var(--pill-active);
+      border-color: #a7b9d1;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+    }
+    .likert-labels span:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+    }
+    .likert-labels span.selected {
+      background: var(--pill-selected-bg);
+      border: 1px solid var(--primary);
+      color: var(--pill-selected-text);
+      font-weight: 600;
+    }
 
+    .submit-button {
+      display: block;
+      margin: 40px auto 0;
+      padding: 16px 32px;
+      font-size: 18px;
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .submit-button:hover {
+      background-color: var(--primary-dark);
+    }
 
-  /* Klikbare Likert-labels */
-  .likert-labels {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    font-size: 12px;
-    margin-bottom: 8px;
-  }
-  .likert-labels span {
-    padding: 8px 10px;
-    border-radius: 9999px; /* pill */
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    white-space: nowrap; /* undgå linjeskift i fx 'Meget uenig' */
-    background: #f6f8fb;
-    border: 1px solid #cfd8e3;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
-    color: #333;
-    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-  }
-  .likert-labels span:hover {
-    background: #eef3f9;
-    border-color: #b8c6d8;
-  }
-  .likert-labels span:active {
-    background: #e6eef8;
-    border-color: #a7b9d1;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
-  }
-  .likert-labels span:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
-  }
-  .likert-labels span.selected {
-    background: #e7f1ff;
-    border: 1px solid #007BFF;
-    color: #0b3d91;
-    font-weight: 600;
-  }
-
-  td label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid #ddd;
-  }
-
-  .submit-button {
-    display: block;
-    margin: 40px auto;
-    padding: 16px 32px;
-    font-size: 18px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .submit-button:hover {
-    background-color: #0056b3;
-  }
-</style>
-
+    /* Simple responsive table for narrow screens */
+    @media (max-width: 768px) {
+      td:first-child {
+        width: auto;
+      }
+      .question {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="introForm">
-  <h2>Velkommen til DISC-analysen</h2>
+    <h2>Velkommen til DISC-analysen</h2>
 
-  <div class="intro-field">
-    <label for="inputDato">Dato:<span class="required">*</span></label>
-    <input type="date" id="inputDato" required>
-  </div>
+    <div class="intro-field">
+      <label for="inputDato">Dato:<span class="required">*</span></label>
+      <input type="date" id="inputDato" required />
+    </div>
 
-  <div class="intro-field">
-    <label for="inputFornavn">Fornavn:<span class="required">*</span></label>
-    <input type="text" id="inputFornavn" required>
-  </div>
+    <div class="intro-field">
+      <label for="inputFornavn">Fornavn:<span class="required">*</span></label>
+      <input type="text" id="inputFornavn" required />
+    </div>
 
-  <div class="intro-field">
-    <label for="inputEfternavn">Efternavn:<span class="required">*</span></label>
-    <input type="text" id="inputEfternavn" required>
-  </div>
+    <div class="intro-field">
+      <label for="inputEfternavn">Efternavn:<span class="required">*</span></label>
+      <input type="text" id="inputEfternavn" required />
+    </div>
 
-  <div class="intro-field">
-  <label for="inputProfiltype">Profiltype: <span class="required">*</span></label>
-    <select id="inputProfiltype" required>
-      <option value="Basic">Basic</option>
-      <option value="Sælger">Sælger</option>
-      <option value="Leder">Leder</option>
-    </select>
-  </div>
+    <div class="intro-field">
+      <label for="inputProfiltype">Profiltype: <span class="required">*</span></label>
+      <!-- Intentionally default to Basic per your note -->
+      <select id="inputProfiltype" required>
+        <option value="Basic" selected>Basic</option>
+        <option value="Sælger">Sælger</option>
+        <option value="Leder">Leder</option>
+      </select>
+    </div>
 
-  <div class="intro-field">
-	  <label for="inputKoen">Køn:<span class="required">*</span></label>
-	  <select id="inputKoen" required>
-	    <option value="">__</option>
-	    <option value="Mand">Mand</option>
-	    <option value="Kvinde">Kvinde</option>
-	    <option value="Andet">Andet</option>
-	  </select>
-  </div>
+    <div class="intro-field">
+      <label for="inputKoen">Køn:<span class="required">*</span></label>
+      <select id="inputKoen" required>
+        <option value="">__</option>
+        <option value="Mand">Mand</option>
+        <option value="Kvinde">Kvinde</option>
+        <option value="Andet">Andet</option>
+      </select>
+    </div>
 
-  <div class="intro-field">
-    <label for="inputFirma">Firma:</label>
-    <input type="text" id="inputFirma">
-  </div>
+    <div class="intro-field">
+      <label for="inputFirma">Firma:</label>
+      <input type="text" id="inputFirma" />
+    </div>
 
-  <div class="intro-field">
-    <label for="inputEmail">E-mail:<span class="required">*</span></label>
-    <input type="email" id="inputEmail" required>
-  </div>
+    <div class="intro-field">
+      <label for="inputEmail">E-mail:<span class="required">*</span></label>
+      <input type="email" id="inputEmail" required />
+    </div>
 
-  <div class="intro-field">
-    <label>Samtykke:<span class="required">*</span>
-    <input type="checkbox" id="inputSamtykke" required></label>
-    <p>
+    <!-- Samtykke EXACTLY like your original (checkbox inside label + original <p> styling) -->
+    <div class="intro-field">
+      <label>Samtykke:<span class="required">*</span>
+        <input type="checkbox" id="inputSamtykke" required>
+      </label>
+      <p>
         Jeg giver hermed samtykke til, at den information jeg afgiver til udfyldelse af min DISCline profil,
-	    kan anvendes til rekruttering og udviklingsaktiviteter relateret til mig.
-	    Jeg giver tilsagn om, at jeg er over 16 år gammel. Mine data bliver bevaret og slettet jævnfør EU-lov om opbevaring og sletning af persondata.
-	    <br><br>Har du spørgsmål til denne, kontakt venligst Coachers på: <br>tlf: <a href="tel:+4520845503">+45 20 84 55 03</a><br>mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>
+        kan anvendes til rekruttering og udviklingsaktiviteter relateret til mig.
+        Jeg giver tilsagn om, at jeg er over 16 år gammel. Mine data bliver bevaret og slettet jævnfør EU-lov om opbevaring og sletning af persondata.
+        <br><br>Har du spørgsmål til denne, kontakt venligst Coachers på: <br>tlf: <a href="tel:+4520845503">+45 20 84 55 03</a><br>mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>
+      </p>
+    </div>
+
+    <button type="button" onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
+    <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 20px;">
+      Denne side er senest ændret d. 31. august 2025 (21.00)
     </p>
   </div>
 
-  <button onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
-  <p style="text-align: center; font-size: 12px; color: #777; margin-top: 20px;">Denne side er senest ændret d. 23. august 2025 (01.31)</p>
-</div>
   <div id="prepScreen" class="prep-box" style="display: none;">
-  <h2>Vigtige forberedelser</h2>
-  <p>For at sikre det bedste resultat af analysen, anbefaler vi følgende:</p>
-  <ul>
-    <li>Sørg for, at du kan koncentrere dig uden forstyrrelser. Slå din telefon på lydløs, og find et stille sted.</li>
-    <li>Besvar alle udsagn med udgangspunkt i den samme arbejdssituation. Dette er vigtigt for at skabe et klart og sammenhængende billede.</li>
-  </ul>
+    <h2>Vigtige forberedelser</h2>
+    <p>For at sikre det bedste resultat af analysen, anbefaler vi følgende:</p>
+    <ul>
+      <li>Sørg for, at du kan koncentrere dig uden forstyrrelser. Slå din telefon på lydløs, og find et stille sted.</li>
+      <li>Besvar alle udsagn med udgangspunkt i den samme arbejdssituation. Dette er vigtigt for at skabe et klart og sammenhængende billede.</li>
+    </ul>
 
-  <h3>Tidsramme og besvarelse</h3>
-  <ul>
-    <li>Brug maks. 10-12 minutter på at udfylde analysen.</li>
-    <li>Vælg det svar, der naturligt falder dig ind som det første. Det giver det mest præcise resultat.</li>
-  </ul>
+    <h3>Tidsramme og besvarelse</h3>
+    <ul>
+      <li>Brug maks. 10-12 minutter på at udfylde analysen.</li>
+      <li>Vælg det svar, der naturligt falder dig ind som det første. Det giver det mest præcise resultat.</li>
+    </ul>
 
-  <h3>Enhed og udstyr</h3>
-  <ul>
-    <li>Vi anbefaler, at du bruger en PC eller en tablet med en tilpas stor skærm.</li>
-    <li>Undgå at bruge en mobiltelefon, da det kan forringe resultatet.</li>
-  </ul>
+    <h3>Enhed og udstyr</h3>
+    <ul>
+      <li>Vi anbefaler, at du bruger en PC eller en tablet med en tilpas stor skærm.</li>
+      <li>Undgå at bruge en mobiltelefon, da det kan forringe resultatet.</li>
+    </ul>
 
-  <p>God fornøjelse!</p>
-  <p>Hvis du har spørgsmål eller oplever tekniske problemer, er du altid velkommen til at kontakte os.</p>
+    <p>God fornøjelse!</p>
+    <p>Hvis du har spørgsmål eller oplever tekniske problemer, er du altid velkommen til at kontakte os.</p>
 
-  <p>
-    <strong>Preben Braagaard</strong><br>
-    Coachers<br>
-    Telefon: <a href="tel:+4520845503">+45 20 84 55 03</a><br>
-    E-mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>
-  </p>
+    <p>
+      <strong>Preben Braagaard</strong><br />
+      Coachers<br />
+      Telefon: <a href="tel:+4520845503">+45 20 84 55 03</a><br />
+      E-mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>
+    </p>
 
-  <button onclick="showSurvey()" class="submit-button">Fortsæt</button>
-</div>
+    <button type="button" onclick="showSurvey()" class="submit-button">Fortsæt</button>
+  </div>
 
+  <div id="questions" style="display:none;" aria-live="polite"></div>
 
-<div id="questions" style="display:none;"></div>
-  <div id="thankYouScreen" class="prep-box" style="display: none;">
-  <h2>Tak for din besvarelse!</h2>
-  <p>Du får besked fra <strong>Coachers</strong>, når din DISCline-profil er klar.</p>
-	  <p>Hvis du har nogen spørgsmål kan du kontakte <strong>Preben Braagaard</strong> på <br>Telefon: <a href="tel:+4520845503">+45 20 84 55 03</a><br>E-mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a><br><br></p>
-  <p>Du kan nu lukke denne side.</p>
-</div>
-
-
-
-
-
-  </form>
+  <div id="thankYouScreen" class="prep-box" style="display: none;" aria-live="polite">
+    <h2>Tak for din besvarelse!</h2>
+    <p>Du får besked fra <strong>Coachers</strong>, når din DISCline-profil er klar.</p>
+    <p>
+      Hvis du har nogen spørgsmål kan du kontakte <strong>Preben Braagaard</strong> på <br />
+      Telefon: <a href="tel:+4520845503">+45 20 84 55 03</a><br />
+      E-mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a><br /><br />
+    </p>
+    <p>Du kan nu lukke denne side.</p>
+  </div>
 
   <script>
-let respondentInfo = {};
-let likertItems = [];
-let likertQuestions = [];
-let likertAnswers = [];
-let likertCurrent = 0;
-let surveyStartTs = null;
+    // ---------- State ----------
+    let respondentInfo = {};
+    let likertItems = [];
+    let likertQuestions = [];
+    let likertAnswers = [];
+    let likertCurrent = 0;
+    let surveyStartTs = null;
 
-function fetchLikertItems() {
-  const path = "disc_udsagn_2.3.3.csv";
+    // ---------- Reusable helpers ----------
+    const getPoints = (val) => ({ 1:-3, 2:-1, 3:0, 4:1, 5:3 }[val] ?? 0);
 
-  // Robust splitting af CSV-linje med understøttelse af anførselstegn og kommaer i tekst
-  function splitCSVLine(line) {
-    const cols = [];
-    let cur = "";
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') {
-        if (inQuotes && line[i + 1] === '"') {
-          cur += '"';
-          i++;
-        } else {
-          inQuotes = !inQuotes;
-        }
-      } else if (ch === ',' && !inQuotes) {
-        cols.push(cur);
-        cur = "";
-      } else {
-        cur += ch;
-      }
-    }
-    cols.push(cur);
-    return cols;
-  }
-
-  function toBool(val) {
-    if (val == null) return false;
-    const v = String(val).trim().toLowerCase();
-    return v === "true" || v === "1" || v === "ja" || v === "yes" || v === "y" || v === "x";
-  }
-
-  return fetch(path)
-    .then(response => response.text())
-    .then(data => {
-      const rawLines = data.trim().split('\n');
-      // antag at første linje er header
-      const lines = rawLines.slice(1);
-      likertItems = [];
-      lines.forEach(line => {
-        if (!line.trim()) return;
-        const cols = splitCSVLine(line);
-        // Forvent 4 kolonner: udsagn, DISC, reverse, test
-        if (cols.length < 4) return;
-        const udsagn = String(cols[0] || "").trim().replace(/^"|"$/g, '');
-        const disc = String(cols[1] || "").trim().toUpperCase();
-        const reverse = toBool(cols[2]);
-        const test = toBool(cols[3]);
-        if (!udsagn) return;
-        likertItems.push({ text: udsagn, disc, reverse, test });
-      });
-
-      // Bland rækkefølgen for at undgå ordensbias
-      for (let i = likertItems.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [likertItems[i], likertItems[j]] = [likertItems[j], likertItems[i]];
-      }
-      // Gruppér i blokke á 4 udsagn
-      likertQuestions = [];
-      for (let i = 0; i < likertItems.length; i += 4) {
-        const group = likertItems.slice(i, i + 4);
-        if (group.length === 4) {
-          likertQuestions.push({ items: group });
-        }
-      }
-      // Forbered svarstruktur: to værdier pr. udsagn (naturlig/arbejde) og bær reverse/test med
-      likertAnswers = likertQuestions.map(q =>
-        q.items.map(item => ({
-          text: item.text,
-          disc: item.disc || "",
-          reverse: !!item.reverse,
-          test: !!item.test,
-          naturlig: null,
-          arbejde: null
-        }))
-      );
-      likertCurrent = 0;
-      console.log("Likert-udsagn indlæst:", likertItems.length, "– grupper:", likertQuestions.length);
-    })
-    .catch(err => {
-      console.error("Kunne ikke hente Likert-CSV:", err);
-      alert("Der opstod en fejl ved indlæsning af Likert-spørgerammen.");
-    });
-}
-
-// Likert: vis ét spørgsmål ad gangen med 4 udsagn og to Likert-kolonner (sliders 1–5)
-function renderLikertSurvey() {
-  const container = document.getElementById("questions");
-  container.innerHTML = "";
-
-  const q = likertQuestions[likertCurrent];
-  const wrapper = document.createElement("div");
-  wrapper.classList.add("question");
-
-  const header = document.createElement("h2");
-  header.style.marginTop = "0";
-  header.textContent = `Spørgsmål ${likertCurrent + 1}: I hvilken grad passer nedenstående udsagn på dig?`;
-  wrapper.appendChild(header);
-
-  const table = document.createElement("table");
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th>Udsagn</th>
-        <th>Min naturlige adfærd</th>
-        <th>Adfærd på mit arbejde</th>
-      </tr>
-    </thead>
-    <tbody id="likert-body"></tbody>
-  `;
-  wrapper.appendChild(table);
-
-  const tbody = table.querySelector("#likert-body");
-  const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
-
-  q.items.forEach((item, row) => {
-    const answer = likertAnswers[likertCurrent][row];
-    const tr = document.createElement("tr");
-
-    const makeCell = (type) => {
-      const td = document.createElement("td");
-      td.style.textAlign = "left";
-      td.style.verticalAlign = "middle";
-
-      // Header labels over slider (klikbare)
-      const labelBar = document.createElement("div");
-      labelBar.className = "likert-labels";
-      labelBar.style.display = "grid";
-      labelBar.style.gridTemplateColumns = "repeat(5, 1fr)";
-      labelBar.style.gap = "6px";
-      labelBar.style.fontSize = "12px";
-      labelBar.style.marginBottom = "6px";
-
-      const labelSpans = [];
-      for (let v = 1; v <= 5; v++) {
-        const sp = document.createElement("span");
-        sp.textContent = labels[v - 1];
-        sp.dataset.val = String(v);
-        labelBar.appendChild(sp);
-        labelSpans.push(sp);
-      }
-      td.appendChild(labelBar);
-
-      // Brug kun klikbare labels (ingen slider)
-      const currentVal = (type === "naturlig" ? answer.naturlig : answer.arbejde);
-
-      // Funktion til at opdatere label-highlights
-      const updateLabels = (val) => {
-        labelSpans.forEach(sp => {
-          if (parseInt(sp.dataset.val, 10) === val) {
-            sp.classList.add("selected");
-          } else {
-            sp.classList.remove("selected");
-          }
-        });
-      };
-      if (currentVal != null) updateLabels(currentVal);
-
-      // Klik på label sætter værdi direkte
-      labelSpans.forEach(sp => {
-        sp.addEventListener("click", () => {
-          const v = parseInt(sp.dataset.val, 10);
-          updateLabels(v);
-          const qIdx = likertCurrent;
-          const rIdx = row;
-          const kind = type;
-          likertAnswers[qIdx][rIdx][kind] = v;
-        });
-      });
-
-      return td;
+    const calculateRawValue = (sum, count) => {
+      if (!count || count <= 0) return 0;
+      const maxPositive = count * 3; // per item +3 max
+      // map [-3*count, +3*count] -> [0,100]
+      return Math.round(((sum + maxPositive) / (2 * maxPositive)) * 100);
     };
 
-    const tdText = document.createElement("td");
-    tdText.textContent = item.text;
-    tdText.style.fontSize = "18px";
-    tdText.style.fontWeight = "600";
+    // For each category (Arbejde or Naturlig), scale four dims to sum ~200 (each dim capped at 100)
+    const normalizeToSum200 = (value, sum) => {
+      if (sum === 0) return 0;
+      return Math.min(100, Math.round((value / sum) * 200));
+    };
 
-    tr.appendChild(tdText);
-    tr.appendChild(makeCell("naturlig"));
-    tr.appendChild(makeCell("arbejde"));
-    tbody.appendChild(tr);
-  });
+    const mean = (a, b) => (Number(a || 0) + Number(b || 0)) / 2;
 
-  const nextBtn = document.createElement("button");
-  nextBtn.className = "submit-button";
-  nextBtn.textContent = (likertCurrent === likertQuestions.length - 1) ? "Afslut og indsend" : "Næste";
-  nextBtn.onclick = () => {
-    // valider at alle 4 rækker har begge valg
-    const rows = likertAnswers[likertCurrent];
-    const incomplete = rows.findIndex(r => r.naturlig == null || r.arbejde == null);
-    if (incomplete !== -1) {
-      alert("Udfyld venligst alle vurderinger (begge kolonner) før du fortsætter.");
-      return;
+    const pairPenalty = (a, b, hi = 65, lo = 35) => {
+      let p = 0;
+      if (a >= hi && b >= hi) {
+        p = ((Math.min(a, b) - hi) / (100 - hi)) * 10;
+      } else if (a <= lo && b <= lo) {
+        p = ((lo - Math.max(a, b)) / lo) * 10;
+      }
+      return Math.max(0, Math.min(10, p));
+    };
+
+    const toBool = (val) => {
+      if (val == null) return false;
+      const v = String(val).trim().toLowerCase();
+      return v === "true" || v === "1" || v === "ja" || v === "yes" || v === "y" || v === "x";
+    };
+
+    // ---------- Data loading ----------
+    function fetchLikertItems() {
+      const path = "disc_udsagn_2.4.csv";
+
+      // Robust CSV line split (quotes + commas), Windows-safe newline
+      function splitCSVLine(line) {
+        const cols = [];
+        let cur = "";
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') {
+            if (inQuotes && line[i + 1] === '"') {
+              cur += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (ch === ',' && !inQuotes) {
+            cols.push(cur);
+            cur = "";
+          } else {
+            cur += ch;
+          }
+        }
+        cols.push(cur);
+        return cols;
+      }
+
+      return fetch(path)
+        .then((response) => response.text())
+        .then((data) => {
+          const rawLines = data.trim().split(/\r?\n/);
+          const lines = rawLines.slice(1); // skip header
+          likertItems = [];
+          lines.forEach((line) => {
+            if (!line.trim()) return;
+            const cols = splitCSVLine(line.replace(/\r$/, ''));
+            if (cols.length < 4) return;
+            const udsagn = String(cols[0] || "").trim().replace(/^"|"$/g, "");
+            const disc = String(cols[1] || "").trim().toUpperCase();
+            const reverse = toBool(cols[2]);
+            const test = toBool(cols[3]);
+            if (!udsagn) return;
+            likertItems.push({ text: udsagn, disc, reverse, test });
+          });
+
+          // Shuffle to avoid order bias
+          for (let i = likertItems.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [likertItems[i], likertItems[j]] = [likertItems[j], likertItems[i]];
+          }
+
+          // Group by 4 statements
+          likertQuestions = [];
+          for (let i = 0; i < likertItems.length; i += 4) {
+            const group = likertItems.slice(i, i + 4);
+            if (group.length === 4) {
+              likertQuestions.push({ items: group });
+            }
+          }
+
+          // Prepare answer grid
+          likertAnswers = likertQuestions.map((q) =>
+            q.items.map((item) => ({
+              text: item.text,
+              disc: item.disc || "",
+              reverse: !!item.reverse,
+              test: !!item.test,
+              naturlig: null,
+              arbejde: null,
+            }))
+          );
+          likertCurrent = 0;
+          console.log("Likert-udsagn indlæst:", likertItems.length, "– grupper:", likertQuestions.length);
+        })
+        .catch((err) => {
+          console.error("Kunne ikke hente Likert-CSV:", err);
+          alert("Der opstod en fejl ved indlæsning af Likert-spørgerammen.");
+        });
     }
-    if (likertCurrent < likertQuestions.length - 1) {
-      likertCurrent += 1;
-      renderLikertSurvey();
-    } else {
-      downloadLikertJSON();
-    }
-  };
 
-  wrapper.appendChild(nextBtn);
-  container.appendChild(wrapper);
-}
+    // ---------- Rendering ----------
+    function renderLikertSurvey() {
+      const container = document.getElementById("questions");
+      container.innerHTML = "";
 
-// Likert: indsamling og download af JSON som normaliserede scores (0-100) pr. DISC-dimension + lineær tidsvaliditet
-async function downloadLikertJSON() {
-  // Valider alle spørgsmål
-  for (let q = 0; q < likertAnswers.length; q++) {
-    const rows = likertAnswers[q];
-    const incomplete = rows.findIndex(r => r.naturlig == null || r.arbejde == null);
-    if (incomplete !== -1) {
-      alert(`Spørgsmål ${q + 1} mangler besvarelser. Udfyld venligst alle vurderinger.`);
-      likertCurrent = q;
-      renderLikertSurvey();
-      return;
-    }
-  }
+      const q = likertQuestions[likertCurrent];
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("question");
 
-  if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
+      const header = document.createElement("h2");
+      header.style.marginTop = "0";
+      header.textContent = `Spørgsmål ${likertCurrent + 1}: I hvilken grad passer nedenstående udsagn på dig?`;
+      wrapper.appendChild(header);
 
-  // DISC-summer: brug omvendt skala hvis reverse med mere markante yderpunkter
-  // 1 = -3, 2 = -1, 3 = 0, 4 = 1, 5 = 3 (skjult for brugeren)
-  const getPoints = val => {
-    switch(val) {
-      case 1: return -3;
-      case 2: return -1;
-      case 3: return 0;
-      case 4: return 1;
-      case 5: return 3;
-      default: return 0;
-    }
-  };
+      const table = document.createElement("table");
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Udsagn</th>
+            <th>Min naturlige adfærd</th>
+            <th>Adfærd på mit arbejde</th>
+          </tr>
+        </thead>
+        <tbody id="likert-body"></tbody>
+      `;
+      wrapper.appendChild(table);
 
-  // Summer pr. DISC-dimension for Arbejde (1) og Naturlig (2) – udelad test-items
-  const sumArbejde = { D: 0, I: 0, S: 0, C: 0 };
-  const sumNaturlig = { D: 0, I: 0, S: 0, C: 0 };
-  const countPerDim = { D: 0, I: 0, S: 0, C: 0 };
-
-  // Detaljerede spørgsmålsdata
-  const detailedAnswers = [];
-
-  // Test- og modsigelsesstraf
-  let testPenalty = 0;
-  let contradictionPenalty = 0;
-
-  const contradict = {
-    arbejde: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } },
-    naturlig: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } }
-  };
-
-  // Gå igennem alle Likert-svar og aggreger
-  for (let q = 0; q < likertQuestions.length; q++) {
-    const items = likertQuestions[q].items;
-    const rows = likertAnswers[q];
-    for (let r = 0; r < rows.length; r++) {
-      const row = rows[r];
-      const item = items[r] || row; // fallback hvis strukturen er identisk
-      const dim = (row.disc || "").toUpperCase();
-      if (!["D", "I", "S", "C"].includes(dim)) continue;
-
-      const isRev = !!row.reverse;
-      const isTest = !!row.test;
-
-      const vArbejde = Number(row.arbejde);
-      const vNaturlig = Number(row.naturlig);
-
-      // Gem detaljerede data for hver besvarelse
+      const tbody = table.querySelector("#likert-body");
       const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
-      detailedAnswers.push({
-        question: row.text,
-        disc: dim,
-        naturlig: {
-          value: vNaturlig,
-          label: labels[vNaturlig - 1],
-          points: isRev ? -getPoints(vNaturlig) : getPoints(vNaturlig)
-        },
-        arbejde: {
-          value: vArbejde,
-          label: labels[vArbejde - 1],
-          points: isRev ? -getPoints(vArbejde) : getPoints(vArbejde)
-        },
-        isReverse: isRev,
-        isTest: isTest
+
+      q.items.forEach((item, row) => {
+        const answer = likertAnswers[likertCurrent][row];
+        const tr = document.createElement("tr");
+
+        const tdText = document.createElement("td");
+        tdText.textContent = item.text;
+        tdText.style.fontSize = "18px";
+        tdText.style.fontWeight = "600";
+        tr.appendChild(tdText);
+
+        const makeCell = (type) => {
+          const td = document.createElement("td");
+          td.style.textAlign = "left";
+          td.style.verticalAlign = "middle";
+
+          const labelBar = document.createElement("div");
+          labelBar.className = "likert-labels";
+
+          const labelSpans = [];
+          for (let v = 1; v <= 5; v++) {
+            const sp = document.createElement("span");
+            sp.textContent = labels[v - 1];
+            sp.dataset.val = String(v);
+            labelBar.appendChild(sp);
+            labelSpans.push(sp);
+          }
+          td.appendChild(labelBar);
+
+          const currentVal = type === "naturlig" ? answer.naturlig : answer.arbejde;
+
+          const updateLabels = (val) => {
+            labelSpans.forEach((sp) => {
+              if (parseInt(sp.dataset.val, 10) === val) sp.classList.add("selected");
+              else sp.classList.remove("selected");
+            });
+          };
+          if (currentVal != null) updateLabels(currentVal);
+
+          labelSpans.forEach((sp) => {
+            sp.addEventListener("click", () => {
+              const v = parseInt(sp.dataset.val, 10);
+              updateLabels(v);
+              likertAnswers[likertCurrent][row][type] = v;
+            });
+          });
+
+          return td;
+        };
+
+        tr.appendChild(makeCell("naturlig"));
+        tr.appendChild(makeCell("arbejde"));
+        tbody.appendChild(tr);
       });
 
-      // Test-straf: 7 point pr. kolonne ved Enig/Meget enig (eller ved Uenig/Meget uenig hvis reverse+test)
-      if (isTest) {
-        if (!isRev) {
-          if (vArbejde >= 4) testPenalty += 7;
-          if (vNaturlig >= 4) testPenalty += 7;
+      const nextBtn = document.createElement("button");
+      nextBtn.className = "submit-button";
+      nextBtn.type = "button";
+      nextBtn.textContent = likertCurrent === likertQuestions.length - 1 ? "Afslut og indsend" : "Næste";
+      nextBtn.onclick = () => {
+        const rows = likertAnswers[likertCurrent];
+        const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
+        if (incomplete !== -1) {
+          alert("Udfyld venligst alle vurderinger (begge kolonner) før du fortsætter.");
+          return;
+        }
+        if (likertCurrent < likertQuestions.length - 1) {
+          likertCurrent += 1;
+          renderLikertSurvey();
         } else {
-          if (vArbejde <= 2) testPenalty += 7;
-          if (vNaturlig <= 2) testPenalty += 7;
+          downloadLikertJSON();
+        }
+      };
+      wrapper.appendChild(nextBtn);
+
+      container.appendChild(wrapper);
+    }
+
+    // ---------- Scoring (shared) ----------
+    function scoreFromAnswers(detailedAnswers, useDurationSeconds = null) {
+      const sumArbejde = { D: 0, I: 0, S: 0, C: 0 };
+      const sumNaturlig = { D: 0, I: 0, S: 0, C: 0 };
+      const countPerDim = { D: 0, I: 0, S: 0, C: 0 };
+
+      let testPenalty = 0;
+      let contradictionPenalty = 0;
+
+      const contradict = {
+        arbejde: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } },
+        naturlig: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } },
+      };
+
+      for (const ans of detailedAnswers) {
+        const dim = (ans.disc || "").toUpperCase();
+        if (!["D", "I", "S", "C"].includes(dim)) continue;
+
+        const isRev = !!ans.isReverse;
+        const isTest = !!ans.isTest;
+
+        const vArbejde = Number(ans.arbejde?.value);
+        const vNaturlig = Number(ans.naturlig?.value);
+
+        if (isTest) {
+          if (!isRev) {
+            if (vArbejde >= 4) testPenalty += 7;
+            if (vNaturlig >= 4) testPenalty += 7;
+          } else {
+            if (vArbejde <= 2) testPenalty += 7;
+            if (vNaturlig <= 2) testPenalty += 7;
+          }
+        } else {
+          const sArbejde = isRev ? -getPoints(vArbejde) : getPoints(vArbejde);
+          const sNaturlig = isRev ? -getPoints(vNaturlig) : getPoints(vNaturlig);
+          sumArbejde[dim] += sArbejde;
+          sumNaturlig[dim] += sNaturlig;
+          countPerDim[dim] += 1;
+        }
+
+        if (vArbejde === 5) {
+          if (isRev) contradict.arbejde[dim].rev5 = true;
+          else contradict.arbejde[dim].norm5 = true;
+        }
+        if (vNaturlig === 5) {
+          if (isRev) contradict.naturlig[dim].rev5 = true;
+          else contradict.naturlig[dim].norm5 = true;
+        }
+      }
+
+      const rawScores = {
+        D1: calculateRawValue(sumArbejde.D, countPerDim.D),
+        I1: calculateRawValue(sumArbejde.I, countPerDim.I),
+        S1: calculateRawValue(sumArbejde.S, countPerDim.S),
+        C1: calculateRawValue(sumArbejde.C, countPerDim.C),
+        D2: calculateRawValue(sumNaturlig.D, countPerDim.D),
+        I2: calculateRawValue(sumNaturlig.I, countPerDim.I),
+        S2: calculateRawValue(sumNaturlig.S, countPerDim.S),
+        C2: calculateRawValue(sumNaturlig.C, countPerDim.C),
+      };
+
+      const sumArbejdeValues = rawScores.D1 + rawScores.I1 + rawScores.S1 + rawScores.C1;
+      const sumNaturligValues = rawScores.D2 + rawScores.I2 + rawScores.S2 + rawScores.C2;
+
+      const score = {
+        D1: normalizeToSum200(rawScores.D1, sumArbejdeValues),
+        I1: normalizeToSum200(rawScores.I1, sumArbejdeValues),
+        S1: normalizeToSum200(rawScores.S1, sumArbejdeValues),
+        C1: normalizeToSum200(rawScores.C1, sumArbejdeValues),
+        D2: normalizeToSum200(rawScores.D2, sumNaturligValues),
+        I2: normalizeToSum200(rawScores.I2, sumNaturligValues),
+        S2: normalizeToSum200(rawScores.S2, sumNaturligValues),
+        C2: normalizeToSum200(rawScores.C2, sumNaturligValues),
+      };
+
+      // Axis penalties
+      const Dm = mean(score.D1, score.D2);
+      const Im = mean(score.I1, score.I2);
+      const Sm = mean(score.S1, score.S2);
+      const Cm = mean(score.C1, score.C2);
+
+      const hasDS = countPerDim.D > 0 && countPerDim.S > 0;
+      const hasIC = countPerDim.I > 0 && countPerDim.C > 0;
+
+      const penaltyDS = hasDS ? pairPenalty(Dm, Sm) : 0;
+      const penaltyIC = hasIC ? pairPenalty(Im, Cm) : 0;
+      const axisPenalty = Math.min(20, Math.round(penaltyDS + penaltyIC));
+
+      // Contradiction penalty
+      ["arbejde", "naturlig"].forEach((ctx) => {
+        ["D", "I", "S", "C"].forEach((dim) => {
+          const flags = contradict[ctx][dim];
+          if (flags.norm5 && flags.rev5) contradictionPenalty += 7;
+        });
+      });
+
+      // Time penalty (use provided duration if given, else compute from surveyStartTs)
+      let durationSec;
+      if (useDurationSeconds != null) {
+        durationSec = Math.max(0, Math.round(useDurationSeconds));
+      } else {
+        const finishedAt = Date.now();
+        durationSec = Math.max(0, Math.round((finishedAt - (surveyStartTs || finishedAt)) / 1000));
+      }
+
+      let timePenalty = 0;
+      const minSec = 75; // 2:30
+      const maxSec = 150; // 5:00
+      if (durationSec <= minSec) {
+        timePenalty = 50;
+      } else if (durationSec < maxSec) {
+        timePenalty = 50 * (maxSec - durationSec) / (maxSec - minSec);
+      } else {
+        timePenalty = 0;
+      }
+
+      const totalPenalty = Math.round(timePenalty) + axisPenalty + testPenalty + contradictionPenalty;
+      const validitet = Math.max(0, Math.round(100 - totalPenalty));
+
+      return {
+        score,
+        validitet,
+        penaltyBreakdown: {
+          timePenalty: Math.round(timePenalty),
+          axisPenalty,
+          testPenalty,
+          contradictionPenalty,
+          totalPenalty,
+        },
+        durationSec,
+      };
+    }
+
+    // ---------- Download / finalize ----------
+    async function downloadLikertJSON(previousResultsText) {
+      let isRecompute = false;
+      let previousResults = null;
+
+      if (previousResultsText) {
+        isRecompute = true;
+        try {
+          previousResults = JSON.parse(previousResultsText);
+        } catch (e) {
+          alert("Ugyldig JSON-fil.");
+          return;
+        }
+        if (!previousResults.detailedAnswers || !Array.isArray(previousResults.detailedAnswers)) {
+          alert("Ugyldig JSON-fil: mangler 'detailedAnswers' array.");
+          return;
         }
       } else {
-        // Værdierne bruges fra getPoints funktionen, der nu er flyttet udenfor loopet
-        const sArbejde = isRev ? -getPoints(vArbejde) : getPoints(vArbejde);
-        const sNaturlig = isRev ? -getPoints(vNaturlig) : getPoints(vNaturlig);
-
-        sumArbejde[dim] += sArbejde;
-        sumNaturlig[dim] += sNaturlig;
-        // Tæl kun ikke-test items for normalisering
-        countPerDim[dim] += 1;
+        // Validate all questions in normal mode
+        for (let q = 0; q < likertAnswers.length; q++) {
+          const rows = likertAnswers[q];
+          const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
+          if (incomplete !== -1) {
+            alert(`Spørgsmål ${q + 1} mangler besvarelser. Udfyld venligst alle vurderinger.`);
+            likertCurrent = q;
+            renderLikertSurvey();
+            return;
+          }
+        }
       }
 
-      // Modsigelsesstraf: Meget enig (5) på både normal og reverse for samme bogstav pr. kolonne
-      // (skalaen er ændret, men vi beholder samme logik for kontradiktioner)
-      if (vArbejde === 5) {
-        if (isRev) contradict.arbejde[dim].rev5 = true;
-        else contradict.arbejde[dim].norm5 = true;
+      if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
+
+      let detailedAnswers;
+      let startTidStr;
+      let slutTidStr;
+
+      if (isRecompute) {
+        // Use detailedAnswers and timestamps from file
+        detailedAnswers = previousResults.detailedAnswers;
+        startTidStr = previousResults.startTid || null;
+        slutTidStr = previousResults.slutTid || null;
+
+        // Also use respondentInfo from file if available
+        const {
+          dato, fornavn, efternavn, profiltype, spoergeramme, koen, firma, email
+        } = previousResults;
+        respondentInfo = {
+          ...(respondentInfo || {}),
+          ...(dato ? { dato } : {}),
+          ...(fornavn ? { fornavn } : {}),
+          ...(efternavn ? { efternavn } : {}),
+          ...(profiltype ? { profiltype } : {}),
+          ...(spoergeramme ? { spoergeramme } : {}),
+          ...(koen ? { koen } : {}),
+          ...(firma ? { firma } : {}),
+          ...(email ? { email } : {}),
+        };
+      } else {
+        // Build detailedAnswers from current in-memory responses
+        detailedAnswers = [];
+        const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
+
+        for (let q = 0; q < likertQuestions.length; q++) {
+          const items = likertQuestions[q].items;
+          const rows = likertAnswers[q];
+          for (let r = 0; r < rows.length; r++) {
+            const row = rows[r];
+            const dim = (row.disc || "").toUpperCase();
+            const isRev = !!row.reverse;
+            const isTest = !!row.test;
+            const vArbejde = Number(row.arbejde);
+            const vNaturlig = Number(row.naturlig);
+
+            detailedAnswers.push({
+              question: row.text,
+              disc: dim,
+              naturlig: {
+                value: vNaturlig,
+                label: labels[vNaturlig - 1],
+                points: isRev ? -getPoints(vNaturlig) : getPoints(vNaturlig),
+              },
+              arbejde: {
+                value: vArbejde,
+                label: labels[vArbejde - 1],
+                points: isRev ? -getPoints(vArbejde) : getPoints(vArbejde),
+              },
+              isReverse: isRev,
+              isTest: isTest,
+            });
+          }
+        }
       }
-      if (vNaturlig === 5) {
-        if (isRev) contradict.naturlig[dim].rev5 = true;
-        else contradict.naturlig[dim].norm5 = true;
+
+      // Duration source:
+      let durationOverride = null;
+      if (isRecompute && startTidStr && slutTidStr) {
+        const start = Date.parse(startTidStr);
+        const end = Date.parse(slutTidStr);
+        if (!Number.isNaN(start) && !Number.isNaN(end) && end > start) {
+          durationOverride = Math.round((end - start) / 1000);
+        }
       }
+
+      // Compute scores (use original duration when recomputing)
+      const { score, validitet, penaltyBreakdown, durationSec } =
+        scoreFromAnswers(detailedAnswers, durationOverride);
+
+      const finishedAt = isRecompute
+        ? (slutTidStr ? Date.parse(slutTidStr) : Date.now())
+        : Date.now();
+
+      const result = {
+        ...respondentInfo,
+        startTid: isRecompute
+          ? (startTidStr || null)
+          : (surveyStartTs ? new Date(surveyStartTs).toISOString() : null),
+        slutTid: new Date(finishedAt).toISOString(),
+        besvarelsestidSek: durationOverride != null ? durationOverride : durationSec,
+        validitet,
+        score,
+        detailedAnswers,
+        penaltyBreakdown,
+      };
+
+      const jsonBlob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
+
+      try {
+        if (window.showSaveFilePicker) {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: isRecompute ? "disc-resultat-likert-genberegnet.json" : "disc-resultat-likert.json",
+            types: [{ description: "JSON-fil", accept: { "application/json": [".json"] } }],
+          });
+          const writable = await handle.createWritable();
+          await writable.write(jsonBlob);
+          await writable.close();
+        } else {
+          const url = URL.createObjectURL(jsonBlob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = isRecompute ? "disc-resultat-likert-genberegnet.json" : "disc-resultat-likert.json";
+          link.click();
+          URL.revokeObjectURL(url);
+        }
+      } catch (e) {
+        alert("Kunne ikke gemme filen.");
+      }
+
+      document.getElementById("questions").style.display = "none";
+      document.getElementById("thankYouScreen").style.display = "block";
     }
-  }
 
-  // Normaliser til 0-100 baseret på ny skala fra -3 til 3
-  const normalize = (sum, count) => {
-    if (!count || count <= 0) return 0;
-    // Maksimal positive sum er antal udsagn * 3
-    const maxPositive = count * 3;
-    // Beregn procent, men husk at sum kan være negativ
-    // Vi mapper fra [-3*count, 3*count] til [0, 100]
-    return Math.round(((sum + maxPositive) / (2 * maxPositive)) * 100);
-  };
+    // ---------- Flow ----------
+    function startSurvey() {
+      const rawDate = document.getElementById("inputDato").value;
+      const parts = rawDate.split("-");
+      const dato = parts.length === 3 ? `${parts[2]}${parts[1]}${parts[0]}` : "";
 
-  const score = {
-    // Arbejde = 1
-    D1: normalize(sumArbejde.D, countPerDim.D),
-    I1: normalize(sumArbejde.I, countPerDim.I),
-    S1: normalize(sumArbejde.S, countPerDim.S),
-    C1: normalize(sumArbejde.C, countPerDim.C),
-    // Naturlig = 2
-    D2: normalize(sumNaturlig.D, countPerDim.D),
-    I2: normalize(sumNaturlig.I, countPerDim.I),
-    S2: normalize(sumNaturlig.S, countPerDim.S),
-    C2: normalize(sumNaturlig.C, countPerDim.C)
-  };
+      const fornavn = document.getElementById("inputFornavn").value;
+      const efternavn = document.getElementById("inputEfternavn").value;
+      const profiltype = document.getElementById("inputProfiltype").value;
+      const koen = document.getElementById("inputKoen").value;
+      const firma = document.getElementById("inputFirma").value;
+      const email = document.getElementById("inputEmail").value;
+      const samtykke = document.getElementById("inputSamtykke").checked;
 
-  // Lineær tidsstraf (max 50) mellem 2:30 og 5:00 min – lang tid straffes ikke
-  const finishedAt = Date.now();
-  const durationSec = Math.max(0, Math.round((finishedAt - (surveyStartTs || finishedAt)) / 1000));
-  const minSec = 150; // 2:30
-  const maxSec = 300; // 5:00
-  let timePenalty;
-  if (durationSec <= minSec) {
-    timePenalty = 50;
-  } else if (durationSec >= maxSec) {
-    timePenalty = 0;
-  } else {
-    timePenalty = 50 * (maxSec - durationSec) / (maxSec - minSec);
-  }
+      if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !samtykke) {
+        alert("Du skal udfylde alle felter og give samtykke for at fortsætte.");
+        return;
+      }
 
-  // Ekstra moderat straf for modsætningsakser (D↔S og I↔C):
-  // - Brug gennemsnit af Arbejde (1) og Naturlig (2) pr. dimension.
-  // - Straf ved høj-høj (>=65) eller lav-lav (<=35), lineært op til 10 pr. akse (maks 20 i alt).
-  const mean = (a, b) => (Number(a || 0) + Number(b || 0)) / 2;
-  const Dm = mean(score.D1, score.D2);
-  const Im = mean(score.I1, score.I2);
-  const Sm = mean(score.S1, score.S2);
-  const Cm = mean(score.C1, score.C2);
+      const spoergeramme = "Likert";
 
-  const highThr = 65;
-  const lowThr = 35;
+      respondentInfo = {
+        dato,
+        fornavn,
+        efternavn,
+        profiltype,
+        spoergeramme,
+        koen,
+        firma,
+        email,
+      };
 
-  function pairPenalty(a, b) {
-    let p = 0;
-    if (a >= highThr && b >= highThr) {
-      p = ((Math.min(a, b) - highThr) / (100 - highThr)) * 10;
-    } else if (a <= lowThr && b <= lowThr) {
-      p = ((lowThr - Math.max(a, b)) / lowThr) * 10;
+      document.getElementById("introForm").style.display = "none";
+      document.getElementById("prepScreen").style.display = "block";
     }
-    // Begræns til [0,10]
-    return Math.max(0, Math.min(10, p));
-  }
 
-  // Kun beregn akse-straf, hvis der faktisk er udsagn for de pågældende dimensioner
-  const hasDS = (countPerDim.D > 0) && (countPerDim.S > 0);
-  const hasIC = (countPerDim.I > 0) && (countPerDim.C > 0);
-  const penaltyDS = hasDS ? pairPenalty(Dm, Sm) : 0;
-  const penaltyIC = hasIC ? pairPenalty(Im, Cm) : 0;
-  const axisPenalty = Math.min(20, Math.round(penaltyDS + penaltyIC));
+    function showSurvey() {
+      surveyStartTs = Date.now();
+      document.getElementById("prepScreen").style.display = "none";
+      document.getElementById("questions").style.display = "block";
 
-  // Modsigelsesstraf: 7 point pr. dimension pr. kolonne med norm5 & rev5
-  ["arbejde", "naturlig"].forEach(ctx => {
-    (["D", "I", "S", "C"]).forEach(dim => {
-      const flags = contradict[ctx][dim];
-      if (flags.norm5 && flags.rev5) contradictionPenalty += 7;
+      fetchLikertItems().then(() => {
+        renderLikertSurvey();
+      });
+    }
+
+    // ---------- Developer Shortcut (Ctrl+Alt+D) ----------
+    // Bypasses intro validation. Uses file's respondentInfo and timestamps if available.
+    window.addEventListener("keydown", function (e) {
+      if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "d") {
+        e.preventDefault();
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = ".json";
+        fileInput.style.display = "none";
+        document.body.appendChild(fileInput);
+
+        fileInput.addEventListener("change", function () {
+          const files = fileInput.files;
+          if (files && files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+              try {
+                // Hide intro immediately; no validation needed in dev mode
+                document.getElementById("introForm").style.display = "none";
+                downloadLikertJSON(evt.target.result);
+              } catch (error) {
+                alert(`Der opstod en fejl ved behandling af JSON-filen: ${error.message}`);
+              }
+            };
+            reader.onerror = function () {
+              alert("Der opstod en fejl ved læsning af filen.");
+            };
+            reader.readAsText(files[0]);
+          }
+          document.body.removeChild(fileInput);
+        }, { once: true });
+
+        fileInput.click();
+      }
     });
-  });
 
-  const totalPenalty = Math.round(timePenalty) + axisPenalty + testPenalty + contradictionPenalty;
-  const validitet = Math.max(0, Math.round(100 - totalPenalty));
+    // ---------- Startup ----------
+    window.addEventListener("DOMContentLoaded", () => {
+      // Default date = today
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      const todayString = `${yyyy}-${mm}-${dd}`;
+      document.getElementById("inputDato").value = todayString;
 
-  const result = {
-    ...respondentInfo,
-    startTid: surveyStartTs ? new Date(surveyStartTs).toISOString() : null,
-    slutTid: new Date(finishedAt).toISOString(),
-    besvarelsestidSek: durationSec,
-    validitet,
-    score,
-    detailedAnswers,
-    penaltyBreakdown: {
-      timePenalty: Math.round(timePenalty),
-      axisPenalty,
-      testPenalty,
-      contradictionPenalty,
-      totalPenalty
-    }
-  };
-
-  const jsonBlob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
-
-  if (window.showSaveFilePicker) {
-    const handle = await window.showSaveFilePicker({
-      suggestedName: "disc-resultat-likert.json",
-      types: [{
-        description: "JSON-fil",
-        accept: { "application/json": [".json"] }
-      }]
+      // Subtle dev indicator in test/localhost
+      if (
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1" ||
+        window.location.hostname.includes("test")
+      ) {
+        const devIndicator = document.createElement("div");
+        devIndicator.style.position = "fixed";
+        devIndicator.style.bottom = "2px";
+        devIndicator.style.right = "2px";
+        devIndicator.style.fontSize = "8px";
+        devIndicator.style.color = "#ddd";
+        devIndicator.style.opacity = "0.3";
+        devIndicator.style.padding = "1px";
+        devIndicator.style.fontFamily = "monospace";
+        devIndicator.title = "Tryk Ctrl+Alt+D for udviklerværktøjer";
+        devIndicator.textContent = "·";
+        document.body.appendChild(devIndicator);
+      }
     });
-    const writable = await handle.createWritable();
-    await writable.write(jsonBlob);
-    await writable.close();
-  } else {
-    const url = URL.createObjectURL(jsonBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "disc-resultat-likert.json";
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
-  document.getElementById("questions").style.display = "none";
-  document.getElementById("thankYouScreen").style.display = "block";
-}
-
-
-
-function startSurvey() {
-	const rawDate = document.getElementById("inputDato").value;
-	const parts = rawDate.split("-");
-	const dato = parts.length === 3 ? `${parts[2]}${parts[1]}${parts[0]}` : "";
-
-  const fornavn = document.getElementById("inputFornavn").value;
-  const efternavn = document.getElementById("inputEfternavn").value;
-  const profiltype = document.getElementById("inputProfiltype").value;
-  const koen = document.getElementById("inputKoen").value;
-  const firma = document.getElementById("inputFirma").value;
-  const email = document.getElementById("inputEmail").value;
-  const samtykke = document.getElementById("inputSamtykke").checked;
-
-  if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !samtykke) {
-    alert("Du skal udfylde alle felter og give samtykke for at fortsætte.");
-    return;
-  }
-
-  const spoergeramme = "Likert";
-
-  respondentInfo = {
-    dato,
-    fornavn,
-    efternavn,
-    profiltype,
-    spoergeramme,
-    koen,
-    firma,
-    email
-  };
-
-  // Skjul intro, vis spørgsmål
-document.getElementById("introForm").style.display = "none";
-document.getElementById("prepScreen").style.display = "block";
-}
-
-function showSurvey() {
-  surveyStartTs = Date.now();
-  document.getElementById("prepScreen").style.display = "none";
-  document.getElementById("questions").style.display = "block";
-
-  fetchLikertItems().then(() => {
-    renderLikertSurvey();
-  });
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0'); // måneder = 0-indekseret
-  const dd = String(today.getDate()).padStart(2, '0');
-
-  const todayString = `${yyyy}-${mm}-${dd}`; // HTML date format
-  document.getElementById("inputDato").value = todayString;
-});
-
-
-
-</script>
-
+  </script>
 </body>
 </html>
-
-
-
