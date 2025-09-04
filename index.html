@@ -10,7 +10,7 @@
       --card: #ffffff;
       --text: #333;
       --muted: #777;
-      --border: #c7c7c7;
+      --border: #b7b7b7;
       --primary: #007BFF;
       --primary-dark: #0056b3;
       --pill-bg: #f6f8fb;
@@ -75,9 +75,13 @@
       display: grid;
       grid-template-columns: 130px 1fr;
       gap: 12px;
-      align-items: start;
+      align-items: center;
       margin-bottom: 16px;
     }
+    .intro-field.samtykke-field {
+        align-items: start; /* Overstyr til 'start' for samtykke-feltet */
+	}
+
 
     .intro-field label { font-weight: bold; }
 
@@ -103,20 +107,20 @@
     }
 
     table { width: 100%; border-collapse: collapse; table-layout: auto; }
-    td, th { padding: 10px; text-align: left; vertical-align: middle; }
+    td, th { padding: 10px 10px; text-align: left; vertical-align: middle; }
 
     td:first-child { width: 50%; }
-    td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) { width: 25%; text-align: left; }
+    td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) { width: 25%; text-align: center; }
 
-    td:nth-child(2), th:nth-child(2) { border-left: 1px solid var(--border); }
-    td:nth-child(3), th:nth-child(3) { border-left: 1px solid var(--border); }
+    td:nth-child(2), th:nth-child(2) { border-left: 3px solid var(--border); }
+    td:nth-child(3), th:nth-child(3) { border-left: 3px solid var(--border); }
 
     th { background-color: #efefef; }
 
     /* 6 klikbare Likert "pills" */
     .likert-labels {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
       font-size: 12px;
       margin-bottom: 8px;
@@ -125,7 +129,7 @@
       padding: 8px 10px;
       border-radius: 9999px;
       text-align: center;
-      cursor: pointer;
+      cursor: pointer;<
       user-select: none;
       white-space: nowrap;
       background: var(--pill-bg);
@@ -193,8 +197,8 @@
     </div>
 
     <div class="intro-field">
-      <label for="inputFirma">Firma:</label>
-      <input type="text" id="inputFirma" />
+      <label for="inputFirma">Firma:<span class="required">*</span></label>
+      <input type="text" id="inputFirma" required />
     </div>
 
     <div class="intro-field">
@@ -203,7 +207,7 @@
     </div>
 
     <!-- Samtykke -->
-    <div class="intro-field">
+    <div class="intro-field samtykke-field">
       <label>Samtykke:<span class="required">*</span>
         <input type="checkbox" id="inputSamtykke" required>
       </label>
@@ -211,31 +215,21 @@
         Jeg giver hermed samtykke til, at den information jeg afgiver til udfyldelse af min DISCline profil,
         kan anvendes til rekruttering og udviklingsaktiviteter relateret til mig.
         Jeg giver tilsagn om, at jeg er over 16 år gammel. Mine data bliver bevaret og slettet jævnfør EU-lov om opbevaring og sletning af persondata.
-        <br><br>Har du spørgsmål til denne, kontakt venligst Coachers på: <br>tlf: <a href="tel:+4520845503">+45 20 84 55 03</a><br>mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>
       </p>
     </div>
 
     <button type="button" onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
-    <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 20px;">
-      Denne side er senest ændret d. 4. september 2025 (21:47)
-    </p>
   </div>
 
   <div id="prepScreen" class="prep-box" style="display: none;">
-    <h2>Vigtige forberedelser</h2>
+    <h2>Gode råd</h2>
     <p>For at sikre det bedste resultat af analysen, anbefaler vi følgende:</p>
     <ul>
-      <li>Sørg for, at du kan koncentrere dig uden forstyrrelser. Slå din telefon på lydløs, og find et stille sted.</li>
-      <li>Besvar alle udsagn med udgangspunkt i den samme arbejdssituation. Dette er vigtigt for at skabe et klart og sammenhængende billede.</li>
+      <li>Sørg for, at du kan koncentrere dig uden forstyrrelser. Slå din telefon på lydløs, og find et roligt sted.</li>
+      <li>Brug ca. 10-15 minutter på at udfylde analysen.</li>
+      <li>Vælg det svar, der naturligt falder dig ind. Det giver det mest præcise resultat.</li>
     </ul>
-
-    <h3>Tidsramme og besvarelse</h3>
-    <ul>
-      <li>Brug maks. 10-12 minutter på at udfylde analysen.</li>
-      <li>Vælg det svar, der naturligt falder dig ind som det første. Det giver det mest præcise resultat.</li>
-    </ul>
-
-    <h3>Enhed og udstyr</h3>
+    <h2>Enhed og udstyr</h2>
     <ul>
       <li>Vi anbefaler, at du bruger en PC eller en tablet med en tilpas stor skærm.</li>
       <li>Undgå at bruge en mobiltelefon, da det kan forringe resultatet.</li>
@@ -258,21 +252,16 @@
 
   <!-- NY DOWNLOAD-SIDE -->
   <div id="downloadScreen" class="prep-box" style="display:none;" aria-live="polite">
-    <h2>Næsten færdig – download din besvarelse</h2>
+    <h2>Du er nu næsten færdig</h2>
     <p>
-      Tak for din besvarelse. Klik på <strong>Download</strong> herunder for at hente din JSON-fil.
-      Send den derefter straks til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>.
+      Tak for din besvarelse. Når du klikker på download, så modtager du en json-fil. Den skal du straks videresende til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>.
     </p>
     <button type="button" onclick="handleDownloadClick()" class="submit-button">Download</button>
-    <p style="font-size:12px;color:var(--muted);margin-top:12px;">
-      Hvis "Download" ikke virker, prøv i en anden browser (Chrome/Edge) eller tillad pop-ups.
-    </p>
   </div>
 
   <div id="thankYouScreen" class="prep-box" style="display: none;" aria-live="polite">
-    <h2>Tak!</h2>
-    <p>Din fil burde nu være downloadet. Husk at sende den til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>.</p>
-    <p>Du kan nu lukke denne side.</p>
+    <h2>Tak for din besvarelse</h2>
+    <p>Send nu din json-fil til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>, så vi kan færdiggøre din <strong>DISC</strong>line rapport</p>
   </div>
 
   <script>
@@ -285,8 +274,9 @@
     let surveyStartTs = null;
 
     // ---------- Helpers ----------
-    // 6-punkt skala: 1..6 -> [-5, -3, -1, 1, 3, 5]
-    const getPoints = (val) => ({ 1:-5, 2:-3, 3:-1, 4:1, 5:3, 6:5 }[val] ?? 0);
+    // 5-punkt skala: 1..5 -> [-5, -3, 0, 3, 5]
+	const getPoints = (val) => ({ 1:-5, 2:-3, 3:0, 4:3, 5:5 }[val] ?? 0);
+
 
     // Skalerer sum i intervallet [-5*count, +5*count] til [0,100]
     const calculateRawValue = (sum, count) => {
@@ -421,7 +411,7 @@
       wrapper.appendChild(table);
 
       const tbody = table.querySelector("#likert-body");
-      const labels = ["Meget uenig", "Uenig", "Lidt uenig", "Lidt enig", "Enig", "Meget enig"];
+      const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
 
       q.items.forEach((item, row) => {
         const answer = likertAnswers[likertCurrent][row];
@@ -429,7 +419,7 @@
 
         const tdText = document.createElement("td");
         tdText.textContent = item.text;
-        tdText.style.fontSize = "18px";
+        tdText.style.fontSize = "17px";
         tdText.style.fontWeight = "600";
         tr.appendChild(tdText);
 
@@ -442,7 +432,7 @@
           labelBar.className = "likert-labels";
 
           const labelSpans = [];
-          for (let v = 1; v <= 6; v++) {
+          for (let v = 1; v <= 5; v++) {
             const sp = document.createElement("span");
             sp.textContent = labels[v - 1];
             sp.dataset.val = String(v);
@@ -538,8 +528,8 @@
         // Test-penalty: høj enighed (≥5) på ja-items / lav (≤2) på reverse
         if (isTest) {
           if (!isRev) {
-            if (vArbejde >= 5) testPenalty += 7;
-            if (vNaturlig >= 5) testPenalty += 7;
+            if (vArbejde >= 4) testPenalty += 7;
+            if (vNaturlig >= 4) testPenalty += 7;
           } else {
             if (vArbejde <= 2) testPenalty += 7;
             if (vNaturlig <= 2) testPenalty += 7;
@@ -552,9 +542,9 @@
           countPerDim[dim] += 1;
         }
 
-        // Modstrid: max (6) på både normal og reverse
-        if (vArbejde === 6) { if (isRev) contradict.arbejde[dim].revMax = true; else contradict.arbejde[dim].normMax = true; }
-        if (vNaturlig === 6) { if (isRev) contradict.naturlig[dim].revMax = true; else contradict.naturlig[dim].normMax = true; }
+        // Modstrid: max (5) på både normal og reverse
+        if (vArbejde === 5) { if (isRev) contradict.arbejde[dim].revMax = true; else contradict.arbejde[dim].normMax = true; }
+        if (vNaturlig === 5) { if (isRev) contradict.naturlig[dim].revMax = true; else contradict.naturlig[dim].normMax = true; }
       }
 
       const raw = {
@@ -682,7 +672,7 @@
         };
       } else {
         detailedAnswers = [];
-        const labels = ["Meget uenig", "Uenig", "Lidt uenig", "Lidt enig", "Enig", "Meget enig"];
+        const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
 
         for (let q = 0; q < likertQuestions.length; q++) {
           const items = likertQuestions[q].items;
@@ -785,7 +775,7 @@
       const email = document.getElementById("inputEmail").value;
       const samtykke = document.getElementById("inputSamtykke").checked;
 
-      if (!dato || !fornavn || !efternavn || !email || !koen || !samtykke) {
+      if (!dato || !fornavn || !efternavn || !email || !koen || !firma || !samtykke) {
         alert("Du skal udfylde alle felter og give samtykke for at fortsætte.");
         return;
       }
