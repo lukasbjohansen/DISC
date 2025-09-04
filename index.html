@@ -19,7 +19,7 @@
       --pill-active: #e6eef8;
       --pill-selected-bg: #e7f1ff;
       --pill-selected-text: #0b3d91;
-      --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     body {
@@ -69,9 +69,7 @@
       padding-left: 20px;
     }
 
-    .prep-box p {
-      margin: 10px 0;
-    }
+    .prep-box p { margin: 10px 0; }
 
     .intro-field {
       display: grid;
@@ -81,9 +79,7 @@
       margin-bottom: 16px;
     }
 
-    .intro-field label {
-      font-weight: bold;
-    }
+    .intro-field label { font-weight: bold; }
 
     .intro-field input,
     .intro-field select {
@@ -93,16 +89,9 @@
       border-radius: 4px;
     }
 
-    /* Keep your original paragraph styling inside intro fields */
-    .intro-field p {
-      margin: 0;
-      font-size: 12px;
-      font-weight: 100;
-    }
+    .intro-field p { margin: 0; font-size: 12px; font-weight: 100; }
 
-    select:invalid {
-      border-color: red;
-    }
+    select:invalid { border-color: red; }
 
     .question {
       background: var(--card);
@@ -113,42 +102,21 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: auto;
-    }
+    table { width: 100%; border-collapse: collapse; table-layout: auto; }
+    td, th { padding: 10px; text-align: left; vertical-align: middle; }
 
-    td, th {
-      padding: 10px;
-      text-align: left;
-      vertical-align: middle;
-    }
+    td:first-child { width: 50%; }
+    td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) { width: 25%; text-align: left; }
 
-    td:first-child {
-      width: 50%;
-    }
+    td:nth-child(2), th:nth-child(2) { border-left: 1px solid var(--border); }
+    td:nth-child(3), th:nth-child(3) { border-left: 1px solid var(--border); }
 
-    td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) {
-      width: 25%;
-      text-align: left;
-    }
+    th { background-color: #efefef; }
 
-    td:nth-child(2), th:nth-child(2) {
-      border-left: 1px solid var(--border);
-    }
-    td:nth-child(3), th:nth-child(3) {
-      border-left: 1px solid var(--border);
-    }
-
-    th {
-      background-color: #efefef;
-    }
-
-    /* Clickable Likert "pills" */
+    /* 6 klikbare Likert "pills" */
     .likert-labels {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 8px;
       font-size: 12px;
       margin-bottom: 8px;
@@ -166,19 +134,9 @@
       color: var(--text);
       transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
-    .likert-labels span:hover {
-      background: var(--pill-hover);
-      border-color: #b8c6d8;
-    }
-    .likert-labels span:active {
-      background: var(--pill-active);
-      border-color: #a7b9d1;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
-    }
-    .likert-labels span:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
-    }
+    .likert-labels span:hover { background: var(--pill-hover); border-color: #b8c6d8; }
+    .likert-labels span:active { background: var(--pill-active); border-color: #a7b9d1; box-shadow: inset 0 1px 2px rgba(0,0,0,0.06); }
+    .likert-labels span:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,123,255,0.2); }
     .likert-labels span.selected {
       background: var(--pill-selected-bg);
       border: 1px solid var(--primary);
@@ -197,18 +155,11 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    .submit-button:hover {
-      background-color: var(--primary-dark);
-    }
+    .submit-button:hover { background-color: var(--primary-dark); }
 
-    /* Simple responsive table for narrow screens */
     @media (max-width: 768px) {
-      td:first-child {
-        width: auto;
-      }
-      .question {
-        padding: 20px;
-      }
+      td:first-child { width: auto; }
+      .question { padding: 20px; }
     }
   </style>
 </head>
@@ -232,16 +183,6 @@
     </div>
 
     <div class="intro-field">
-      <label for="inputProfiltype">Profiltype: <span class="required">*</span></label>
-      <!-- Intentionally default to Basic per your note -->
-      <select id="inputProfiltype" required>
-        <option value="Basic" selected>Basic</option>
-        <option value="Sælger">Sælger</option>
-        <option value="Leder">Leder</option>
-      </select>
-    </div>
-
-    <div class="intro-field">
       <label for="inputKoen">Køn:<span class="required">*</span></label>
       <select id="inputKoen" required>
         <option value="">__</option>
@@ -261,7 +202,7 @@
       <input type="email" id="inputEmail" required />
     </div>
 
-    <!-- Samtykke EXACTLY like your original (checkbox inside label + original <p> styling) -->
+    <!-- Samtykke -->
     <div class="intro-field">
       <label>Samtykke:<span class="required">*</span>
         <input type="checkbox" id="inputSamtykke" required>
@@ -276,7 +217,7 @@
 
     <button type="button" onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
     <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 20px;">
-      Denne side er senest ændret d. 3. september 2025 (19.32)
+      Denne side er senest ændret d. 4. september 2025 (21:47)
     </p>
   </div>
 
@@ -315,14 +256,22 @@
 
   <div id="questions" style="display:none;" aria-live="polite"></div>
 
-  <div id="thankYouScreen" class="prep-box" style="display: none;" aria-live="polite">
-    <h2>Tak for din besvarelse!</h2>
-    <p>Du får besked fra <strong>Coachers</strong>, når din DISCline-profil er klar.</p>
+  <!-- NY DOWNLOAD-SIDE -->
+  <div id="downloadScreen" class="prep-box" style="display:none;" aria-live="polite">
+    <h2>Næsten færdig – download din besvarelse</h2>
     <p>
-      Hvis du har nogen spørgsmål kan du kontakte <strong>Preben Braagaard</strong> på <br />
-      Telefon: <a href="tel:+4520845503">+45 20 84 55 03</a><br />
-      E-mail: <a href="mailto:pb@coachers.dk">pb@coachers.dk</a><br /><br />
+      Tak for din besvarelse. Klik på <strong>Download</strong> herunder for at hente din JSON-fil.
+      Send den derefter straks til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>.
     </p>
+    <button type="button" onclick="handleDownloadClick()" class="submit-button">Download</button>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;">
+      Hvis "Download" ikke virker, prøv i en anden browser (Chrome/Edge) eller tillad pop-ups.
+    </p>
+  </div>
+
+  <div id="thankYouScreen" class="prep-box" style="display: none;" aria-live="polite">
+    <h2>Tak!</h2>
+    <p>Din fil burde nu være downloadet. Husk at sende den til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>.</p>
     <p>Du kan nu lukke denne side.</p>
   </div>
 
@@ -335,17 +284,18 @@
     let likertCurrent = 0;
     let surveyStartTs = null;
 
-    // ---------- Reusable helpers ----------
-    const getPoints = (val) => ({ 1:-5, 2:-2, 3:0, 4:2, 5:5 }[val] ?? 0);
+    // ---------- Helpers ----------
+    // 6-punkt skala: 1..6 -> [-5, -3, -1, 1, 3, 5]
+    const getPoints = (val) => ({ 1:-5, 2:-3, 3:-1, 4:1, 5:3, 6:5 }[val] ?? 0);
 
+    // Skalerer sum i intervallet [-5*count, +5*count] til [0,100]
     const calculateRawValue = (sum, count) => {
       if (!count || count <= 0) return 0;
-      const maxPositive = count * 3; // per item +3 max
-      // map [-3*count, +3*count] -> [0,100]
+      const maxPositive = count * 5; // pr. item +5 max
       return Math.round(((sum + maxPositive) / (2 * maxPositive)) * 100);
     };
 
-    // For each category (Arbejde or Naturlig), scale four dims to sum ~200 (each dim capped at 100)
+    // For hver kategori (Arbejde/Naturlig), skaler 4 dimensioner til sum ~200 (maks 100 pr. dim)
     const normalizeToSum200 = (value, sum) => {
       if (sum === 0) return 0;
       return Math.min(100, Math.round((value / sum) * 200));
@@ -371,9 +321,8 @@
 
     // ---------- Data loading ----------
     function fetchLikertItems() {
-      const path = "disc_udsagn_2.4.csv";
+      const path = "disc_udsagn_2.5.csv";
 
-      // Robust CSV line split (quotes + commas), Windows-safe newline
       function splitCSVLine(line) {
         const cols = [];
         let cur = "";
@@ -381,12 +330,8 @@
         for (let i = 0; i < line.length; i++) {
           const ch = line[i];
           if (ch === '"') {
-            if (inQuotes && line[i + 1] === '"') {
-              cur += '"';
-              i++;
-            } else {
-              inQuotes = !inQuotes;
-            }
+            if (inQuotes && line[i + 1] === '"') { cur += '"'; i++; }
+            else { inQuotes = !inQuotes; }
           } else if (ch === ',' && !inQuotes) {
             cols.push(cur);
             cur = "";
@@ -416,22 +361,20 @@
             likertItems.push({ text: udsagn, disc, reverse, test });
           });
 
-          // Shuffle to avoid order bias
+          // Shuffle for at undgå rækkefølge-bias
           for (let i = likertItems.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [likertItems[i], likertItems[j]] = [likertItems[j], likertItems[i]];
           }
 
-          // Group by 4 statements
+          // Grupper i 4 udsagn
           likertQuestions = [];
           for (let i = 0; i < likertItems.length; i += 4) {
             const group = likertItems.slice(i, i + 4);
-            if (group.length === 4) {
-              likertQuestions.push({ items: group });
-            }
+            if (group.length === 4) likertQuestions.push({ items: group });
           }
 
-          // Prepare answer grid
+          // Init svar-grid
           likertAnswers = likertQuestions.map((q) =>
             q.items.map((item) => ({
               text: item.text,
@@ -443,7 +386,6 @@
             }))
           );
           likertCurrent = 0;
-          console.log("Likert-udsagn indlæst:", likertItems.length, "– grupper:", likertQuestions.length);
         })
         .catch((err) => {
           console.error("Kunne ikke hente Likert-CSV:", err);
@@ -479,7 +421,7 @@
       wrapper.appendChild(table);
 
       const tbody = table.querySelector("#likert-body");
-      const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
+      const labels = ["Meget uenig", "Uenig", "Lidt uenig", "Lidt enig", "Enig", "Meget enig"];
 
       q.items.forEach((item, row) => {
         const answer = likertAnswers[likertCurrent][row];
@@ -500,7 +442,7 @@
           labelBar.className = "likert-labels";
 
           const labelSpans = [];
-          for (let v = 1; v <= 5; v++) {
+          for (let v = 1; v <= 6; v++) {
             const sp = document.createElement("span");
             sp.textContent = labels[v - 1];
             sp.dataset.val = String(v);
@@ -538,7 +480,11 @@
       const nextBtn = document.createElement("button");
       nextBtn.className = "submit-button";
       nextBtn.type = "button";
-      nextBtn.textContent = likertCurrent === likertQuestions.length - 1 ? "Afslut og indsend" : "Næste";
+
+      // Hvis dette er sidste spørgsmål, vis "Fortsæt" og gå til download-siden i stedet for prompt
+      const isLastQuestion = (likertCurrent === likertQuestions.length - 1);
+      nextBtn.textContent = isLastQuestion ? "Fortsæt" : "Næste";
+
       nextBtn.onclick = () => {
         const rows = likertAnswers[likertCurrent];
         const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
@@ -546,19 +492,26 @@
           alert("Udfyld venligst alle vurderinger (begge kolonner) før du fortsætter.");
           return;
         }
-        if (likertCurrent < likertQuestions.length - 1) {
-          likertCurrent += 1;
-          renderLikertSurvey();
-        } else {
-          downloadLikertJSON();
-        }
-      };
-      wrapper.appendChild(nextBtn);
 
+        // Specifikt krav: efter spørgsmål nr. 12 -> downloadside
+        // (virker også hvis 12 er det sidste; ellers går vi videre normalt)
+        const isQ12 = (likertCurrent === 11); // 0-indekseret => 12. spørgsmål
+        if (isQ12 || isLastQuestion) {
+          document.getElementById("questions").style.display = "none";
+          document.getElementById("downloadScreen").style.display = "block";
+          return;
+        }
+
+        // Næste spørgsmål
+        likertCurrent += 1;
+        renderLikertSurvey();
+      };
+
+      wrapper.appendChild(nextBtn);
       container.appendChild(wrapper);
     }
 
-    // ---------- Scoring (shared) ----------
+    // ---------- Scoring ----------
     function scoreFromAnswers(detailedAnswers, useDurationSeconds = null) {
       const sumArbejde = { D: 0, I: 0, S: 0, C: 0 };
       const sumNaturlig = { D: 0, I: 0, S: 0, C: 0 };
@@ -568,8 +521,8 @@
       let contradictionPenalty = 0;
 
       const contradict = {
-        arbejde: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } },
-        naturlig: { D: { norm5: false, rev5: false }, I: { norm5: false, rev5: false }, S: { norm5: false, rev5: false }, C: { norm5: false, rev5: false } },
+        arbejde: { D: { normMax: false, revMax: false }, I: { normMax: false, revMax: false }, S: { normMax: false, revMax: false }, C: { normMax: false, revMax: false } },
+        naturlig: { D: { normMax: false, revMax: false }, I: { normMax: false, revMax: false }, S: { normMax: false, revMax: false }, C: { normMax: false, revMax: false } },
       };
 
       for (const ans of detailedAnswers) {
@@ -582,10 +535,11 @@
         const vArbejde = Number(ans.arbejde?.value);
         const vNaturlig = Number(ans.naturlig?.value);
 
+        // Test-penalty: høj enighed (≥5) på ja-items / lav (≤2) på reverse
         if (isTest) {
           if (!isRev) {
-            if (vArbejde >= 4) testPenalty += 7;
-            if (vNaturlig >= 4) testPenalty += 7;
+            if (vArbejde >= 5) testPenalty += 7;
+            if (vNaturlig >= 5) testPenalty += 7;
           } else {
             if (vArbejde <= 2) testPenalty += 7;
             if (vNaturlig <= 2) testPenalty += 7;
@@ -598,17 +552,12 @@
           countPerDim[dim] += 1;
         }
 
-        if (vArbejde === 5) {
-          if (isRev) contradict.arbejde[dim].rev5 = true;
-          else contradict.arbejde[dim].norm5 = true;
-        }
-        if (vNaturlig === 5) {
-          if (isRev) contradict.naturlig[dim].rev5 = true;
-          else contradict.naturlig[dim].norm5 = true;
-        }
+        // Modstrid: max (6) på både normal og reverse
+        if (vArbejde === 6) { if (isRev) contradict.arbejde[dim].revMax = true; else contradict.arbejde[dim].normMax = true; }
+        if (vNaturlig === 6) { if (isRev) contradict.naturlig[dim].revMax = true; else contradict.naturlig[dim].normMax = true; }
       }
 
-      const rawScores = {
+      const raw = {
         D1: calculateRawValue(sumArbejde.D, countPerDim.D),
         I1: calculateRawValue(sumArbejde.I, countPerDim.I),
         S1: calculateRawValue(sumArbejde.S, countPerDim.S),
@@ -619,21 +568,20 @@
         C2: calculateRawValue(sumNaturlig.C, countPerDim.C),
       };
 
-      const sumArbejdeValues = rawScores.D1 + rawScores.I1 + rawScores.S1 + rawScores.C1;
-      const sumNaturligValues = rawScores.D2 + rawScores.I2 + rawScores.S2 + rawScores.C2;
+      const sumA = raw.D1 + raw.I1 + raw.S1 + raw.C1;
+      const sumN = raw.D2 + raw.I2 + raw.S2 + raw.C2;
 
       const score = {
-        D1: normalizeToSum200(rawScores.D1, sumArbejdeValues),
-        I1: normalizeToSum200(rawScores.I1, sumArbejdeValues),
-        S1: normalizeToSum200(rawScores.S1, sumArbejdeValues),
-        C1: normalizeToSum200(rawScores.C1, sumArbejdeValues),
-        D2: normalizeToSum200(rawScores.D2, sumNaturligValues),
-        I2: normalizeToSum200(rawScores.I2, sumNaturligValues),
-        S2: normalizeToSum200(rawScores.S2, sumNaturligValues),
-        C2: normalizeToSum200(rawScores.C2, sumNaturligValues),
+        D1: normalizeToSum200(raw.D1, sumA),
+        I1: normalizeToSum200(raw.I1, sumA),
+        S1: normalizeToSum200(raw.S1, sumA),
+        C1: normalizeToSum200(raw.C1, sumA),
+        D2: normalizeToSum200(raw.D2, sumN),
+        I2: normalizeToSum200(raw.I2, sumN),
+        S2: normalizeToSum200(raw.S2, sumN),
+        C2: normalizeToSum200(raw.C2, sumN),
       };
 
-      // Axis penalties
       const Dm = mean(score.D1, score.D2);
       const Im = mean(score.I1, score.I2);
       const Sm = mean(score.S1, score.S2);
@@ -646,33 +594,25 @@
       const penaltyIC = hasIC ? pairPenalty(Im, Cm) : 0;
       const axisPenalty = Math.min(20, Math.round(penaltyDS + penaltyIC));
 
-      // Contradiction penalty
       ["arbejde", "naturlig"].forEach((ctx) => {
         ["D", "I", "S", "C"].forEach((dim) => {
-          const flags = contradict[ctx][dim];
-          if (flags.norm5 && flags.rev5) contradictionPenalty += 7;
+          const f = contradict[ctx][dim];
+          if (f.normMax && f.revMax) contradictionPenalty += 7;
         });
       });
 
-      // Time penalty (use provided duration if given, else compute from surveyStartTs)
+      // Tids-penalty
       let durationSec;
-      if (useDurationSeconds != null) {
-        durationSec = Math.max(0, Math.round(useDurationSeconds));
-      } else {
+      if (useDurationSeconds != null) durationSec = Math.max(0, Math.round(useDurationSeconds));
+      else {
         const finishedAt = Date.now();
         durationSec = Math.max(0, Math.round((finishedAt - (surveyStartTs || finishedAt)) / 1000));
       }
 
       let timePenalty = 0;
-      const minSec = 75; // 2:30
-      const maxSec = 150; // 5:00
-      if (durationSec <= minSec) {
-        timePenalty = 50;
-      } else if (durationSec < maxSec) {
-        timePenalty = 50 * (maxSec - durationSec) / (maxSec - minSec);
-      } else {
-        timePenalty = 0;
-      }
+      const minSec = 75, maxSec = 150;
+      if (durationSec <= minSec) timePenalty = 50;
+      else if (durationSec < maxSec) timePenalty = 50 * (maxSec - durationSec) / (maxSec - minSec);
 
       const totalPenalty = Math.round(timePenalty) + axisPenalty + testPenalty + contradictionPenalty;
       const validitet = Math.max(0, Math.round(100 - totalPenalty));
@@ -692,67 +632,57 @@
     }
 
     // ---------- Download / finalize ----------
+    function handleDownloadClick() {
+      downloadLikertJSON(); // ingen prompt – direkte download
+    }
+
     async function downloadLikertJSON(previousResultsText) {
       let isRecompute = false;
       let previousResults = null;
 
       if (previousResultsText) {
         isRecompute = true;
-        try {
-          previousResults = JSON.parse(previousResultsText);
-        } catch (e) {
-          alert("Ugyldig JSON-fil.");
-          return;
-        }
+        try { previousResults = JSON.parse(previousResultsText); }
+        catch (e) { alert("Ugyldig JSON-fil."); return; }
         if (!previousResults.detailedAnswers || !Array.isArray(previousResults.detailedAnswers)) {
-          alert("Ugyldig JSON-fil: mangler 'detailedAnswers' array.");
-          return;
+          alert("Ugyldig JSON-fil: mangler 'detailedAnswers' array."); return;
         }
       } else {
-        // Validate all questions in normal mode
+        // Valider alle spørgsmål
         for (let q = 0; q < likertAnswers.length; q++) {
           const rows = likertAnswers[q];
           const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
           if (incomplete !== -1) {
             alert(`Spørgsmål ${q + 1} mangler besvarelser. Udfyld venligst alle vurderinger.`);
             likertCurrent = q;
+            document.getElementById("downloadScreen").style.display = "none";
+            document.getElementById("questions").style.display = "block";
             renderLikertSurvey();
             return;
           }
         }
       }
 
-      if (!confirm("Er du sikker på, at du vil indsende din besvarelse?")) return;
-
-      let detailedAnswers;
-      let startTidStr;
-      let slutTidStr;
-
+      let detailedAnswers, startTidStr, slutTidStr;
       if (isRecompute) {
-        // Use detailedAnswers and timestamps from file
         detailedAnswers = previousResults.detailedAnswers;
         startTidStr = previousResults.startTid || null;
         slutTidStr = previousResults.slutTid || null;
 
-        // Also use respondentInfo from file if available
-        const {
-          dato, fornavn, efternavn, profiltype, spoergeramme, koen, firma, email
-        } = previousResults;
+        // Kun felter vi stadig bruger
+        const { dato, fornavn, efternavn, koen, firma, email } = previousResults;
         respondentInfo = {
           ...(respondentInfo || {}),
           ...(dato ? { dato } : {}),
           ...(fornavn ? { fornavn } : {}),
           ...(efternavn ? { efternavn } : {}),
-          ...(profiltype ? { profiltype } : {}),
-          ...(spoergeramme ? { spoergeramme } : {}),
           ...(koen ? { koen } : {}),
           ...(firma ? { firma } : {}),
           ...(email ? { email } : {}),
         };
       } else {
-        // Build detailedAnswers from current in-memory responses
         detailedAnswers = [];
-        const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
+        const labels = ["Meget uenig", "Uenig", "Lidt uenig", "Lidt enig", "Enig", "Meget enig"];
 
         for (let q = 0; q < likertQuestions.length; q++) {
           const items = likertQuestions[q].items;
@@ -785,7 +715,7 @@
         }
       }
 
-      // Duration source:
+      // Varighed fra fil ved genberegning
       let durationOverride = null;
       if (isRecompute && startTidStr && slutTidStr) {
         const start = Date.parse(startTidStr);
@@ -795,7 +725,6 @@
         }
       }
 
-      // Compute scores (use original duration when recomputing)
       const { score, validitet, penaltyBreakdown, durationSec } =
         scoreFromAnswers(detailedAnswers, durationOverride);
 
@@ -821,7 +750,7 @@
       try {
         if (window.showSaveFilePicker) {
           const handle = await window.showSaveFilePicker({
-            suggestedName: isRecompute ? "disc-resultat-likert-genberegnet.json" : "disc-resultat-likert.json",
+            suggestedName: "disc-resultat.json",
             types: [{ description: "JSON-fil", accept: { "application/json": [".json"] } }],
           });
           const writable = await handle.createWritable();
@@ -831,7 +760,7 @@
           const url = URL.createObjectURL(jsonBlob);
           const link = document.createElement("a");
           link.href = url;
-          link.download = isRecompute ? "disc-resultat-likert-genberegnet.json" : "disc-resultat-likert.json";
+          link.download = "disc-resultat.json";
           link.click();
           URL.revokeObjectURL(url);
         }
@@ -839,7 +768,7 @@
         alert("Kunne ikke gemme filen.");
       }
 
-      document.getElementById("questions").style.display = "none";
+      document.getElementById("downloadScreen").style.display = "none";
       document.getElementById("thankYouScreen").style.display = "block";
     }
 
@@ -851,29 +780,17 @@
 
       const fornavn = document.getElementById("inputFornavn").value;
       const efternavn = document.getElementById("inputEfternavn").value;
-      const profiltype = document.getElementById("inputProfiltype").value;
       const koen = document.getElementById("inputKoen").value;
       const firma = document.getElementById("inputFirma").value;
       const email = document.getElementById("inputEmail").value;
       const samtykke = document.getElementById("inputSamtykke").checked;
 
-      if (!dato || !fornavn || !efternavn || !email || !koen || !profiltype || !samtykke) {
+      if (!dato || !fornavn || !efternavn || !email || !koen || !samtykke) {
         alert("Du skal udfylde alle felter og give samtykke for at fortsætte.");
         return;
       }
 
-      const spoergeramme = "Likert";
-
-      respondentInfo = {
-        dato,
-        fornavn,
-        efternavn,
-        profiltype,
-        spoergeramme,
-        koen,
-        firma,
-        email,
-      };
+      respondentInfo = { dato, fornavn, efternavn, koen, firma, email };
 
       document.getElementById("introForm").style.display = "none";
       document.getElementById("prepScreen").style.display = "block";
@@ -889,8 +806,7 @@
       });
     }
 
-    // ---------- Developer Shortcut (Ctrl+Alt+D) ----------
-    // Bypasses intro validation. Uses file's respondentInfo and timestamps if available.
+    // ---------- Dev Shortcut (Ctrl+Alt+D) ----------
     window.addEventListener("keydown", function (e) {
       if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "d") {
         e.preventDefault();
@@ -906,16 +822,14 @@
             const reader = new FileReader();
             reader.onload = function (evt) {
               try {
-                // Hide intro immediately; no validation needed in dev mode
                 document.getElementById("introForm").style.display = "none";
+                // Gå direkte til download med genberegning
                 downloadLikertJSON(evt.target.result);
               } catch (error) {
                 alert(`Der opstod en fejl ved behandling af JSON-filen: ${error.message}`);
               }
             };
-            reader.onerror = function () {
-              alert("Der opstod en fejl ved læsning af filen.");
-            };
+            reader.onerror = function () { alert("Der opstod en fejl ved læsning af filen."); };
             reader.readAsText(files[0]);
           }
           document.body.removeChild(fileInput);
@@ -927,7 +841,6 @@
 
     // ---------- Startup ----------
     window.addEventListener("DOMContentLoaded", () => {
-      // Default date = today
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -935,12 +848,7 @@
       const todayString = `${yyyy}-${mm}-${dd}`;
       document.getElementById("inputDato").value = todayString;
 
-      // Subtle dev indicator in test/localhost
-      if (
-        window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1" ||
-        window.location.hostname.includes("test")
-      ) {
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname.includes("test")) {
         const devIndicator = document.createElement("div");
         devIndicator.style.position = "fixed";
         devIndicator.style.bottom = "2px";
