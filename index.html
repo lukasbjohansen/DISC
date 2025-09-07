@@ -170,7 +170,6 @@
 <body>
   <div id="introForm">
     <h2>Velkommen til DISC-analysen</h2>
-
     <div class="intro-field">
       <label for="inputDato">Dato:<span class="required">*</span></label>
       <input type="date" id="inputDato" required />
@@ -219,7 +218,7 @@
     </div>
 
     <button type="button" onclick="startSurvey()" class="submit-button" style="margin-top: 20px;">Start analysen</button>
-<p>Version 1.0</p>
+<p>Version 2.0</p>
   </div>
 
   <div id="prepScreen" class="prep-box" style="display: none;">
@@ -251,18 +250,8 @@
 
   <div id="questions" style="display:none;" aria-live="polite"></div>
 
-  <!-- NY DOWNLOAD-SIDE -->
-  <div id="downloadScreen" class="prep-box" style="display:none;" aria-live="polite">
-    <h2>Du er nu næsten færdig</h2>
-    <p>
-      Tak for din besvarelse. Når du klikker på download, så modtager du en json-fil. Den skal du straks videresende til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>.
-    </p>
-    <button type="button" onclick="handleDownloadClick()" class="submit-button">Download</button>
-  </div>
-
   <div id="thankYouScreen" class="prep-box" style="display: none;" aria-live="polite">
-    <h2>Tak for din besvarelse</h2>
-    <p>Send nu din json-fil til <a href="mailto:pb@coachers.dk">pb@coachers.dk</a>, så vi kan færdiggøre din <strong>DISC</strong>line rapport</p>
+    <h2>Tak for din besvarelse!</h2>
   </div>
 
   <script>
@@ -312,7 +301,7 @@
 
     // ---------- Data loading ----------
     function fetchLikertItems() {
-      const path = "disc_udsagn_2.5.csv";
+      const path = "disc_udsagn_0.0.csv";
 
       function splitCSVLine(line) {
         const cols = [];
@@ -474,29 +463,27 @@
 
       // Hvis dette er sidste spørgsmål, vis "Fortsæt" og gå til download-siden i stedet for prompt
       const isLastQuestion = (likertCurrent === likertQuestions.length - 1);
-      nextBtn.textContent = isLastQuestion ? "Fortsæt" : "Næste";
+      nextBtn.textContent = isLastQuestion ? "Afslut og indsend" : "Næste";
 
       nextBtn.onclick = () => {
-        const rows = likertAnswers[likertCurrent];
-        const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
-        if (incomplete !== -1) {
-          alert("Udfyld venligst alle vurderinger (begge kolonner) før du fortsætter.");
-          return;
-        }
+  const rows = likertAnswers[likertCurrent];
+  const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
+  if (incomplete !== -1) {
+    alert("Udfyld venligst alle vurderinger (begge kolonner) før du fortsætter.");
+    return;
+  }
 
-        // Specifikt krav: efter spørgsmål nr. 12 -> downloadside
-        // (virker også hvis 12 er det sidste; ellers går vi videre normalt)
-        const isQ12 = (likertCurrent === 11); // 0-indekseret => 12. spørgsmål
-        if (isQ12 || isLastQuestion) {
-          document.getElementById("questions").style.display = "none";
-          document.getElementById("downloadScreen").style.display = "block";
-          return;
-        }
+  if (isLastQuestion) {
+    // Sidste spørgsmål: afslut og upload med det samme
+    downloadLikertJSON();
+    return;
+  }
 
-        // Næste spørgsmål
-        likertCurrent += 1;
-        renderLikertSurvey();
-      };
+  // Ellers videre til næste spørgsmål
+  likertCurrent += 1;
+  renderLikertSurvey();
+};
+
 
       wrapper.appendChild(nextBtn);
       container.appendChild(wrapper);
@@ -622,147 +609,6 @@
       };
     }
 
-    // ---------- Download / finalize ----------
-    function handleDownloadClick() {
-      downloadLikertJSON(); // ingen prompt – direkte download
-    }
-
-    async function downloadLikertJSON(previousResultsText) {
-      let isRecompute = false;
-      let previousResults = null;
-
-      if (previousResultsText) {
-        isRecompute = true;
-        try { previousResults = JSON.parse(previousResultsText); }
-        catch (e) { alert("Ugyldig JSON-fil."); return; }
-        if (!previousResults.detailedAnswers || !Array.isArray(previousResults.detailedAnswers)) {
-          alert("Ugyldig JSON-fil: mangler 'detailedAnswers' array."); return;
-        }
-      } else {
-        // Valider alle spørgsmål
-        for (let q = 0; q < likertAnswers.length; q++) {
-          const rows = likertAnswers[q];
-          const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
-          if (incomplete !== -1) {
-            alert(`Spørgsmål ${q + 1} mangler besvarelser. Udfyld venligst alle vurderinger.`);
-            likertCurrent = q;
-            document.getElementById("downloadScreen").style.display = "none";
-            document.getElementById("questions").style.display = "block";
-            renderLikertSurvey();
-            return;
-          }
-        }
-      }
-
-      let detailedAnswers, startTidStr, slutTidStr;
-      if (isRecompute) {
-        detailedAnswers = previousResults.detailedAnswers;
-        startTidStr = previousResults.startTid || null;
-        slutTidStr = previousResults.slutTid || null;
-
-        // Kun felter vi stadig bruger
-        const { dato, fornavn, efternavn, koen, firma, email } = previousResults;
-        respondentInfo = {
-          ...(respondentInfo || {}),
-          ...(dato ? { dato } : {}),
-          ...(fornavn ? { fornavn } : {}),
-          ...(efternavn ? { efternavn } : {}),
-          ...(koen ? { koen } : {}),
-          ...(firma ? { firma } : {}),
-          ...(email ? { email } : {}),
-        };
-      } else {
-        detailedAnswers = [];
-        const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
-
-        for (let q = 0; q < likertQuestions.length; q++) {
-          const items = likertQuestions[q].items;
-          const rows = likertAnswers[q];
-          for (let r = 0; r < rows.length; r++) {
-            const row = rows[r];
-            const dim = (row.disc || "").toUpperCase();
-            const isRev = !!row.reverse;
-            const isTest = !!row.test;
-            const vArbejde = Number(row.arbejde);
-            const vNaturlig = Number(row.naturlig);
-
-            detailedAnswers.push({
-              question: row.text,
-              disc: dim,
-              naturlig: {
-                value: vNaturlig,
-                label: labels[vNaturlig - 1],
-                points: isRev ? -getPoints(vNaturlig) : getPoints(vNaturlig),
-              },
-              arbejde: {
-                value: vArbejde,
-                label: labels[vArbejde - 1],
-                points: isRev ? -getPoints(vArbejde) : getPoints(vArbejde),
-              },
-              isReverse: isRev,
-              isTest: isTest,
-            });
-          }
-        }
-      }
-
-      // Varighed fra fil ved genberegning
-      let durationOverride = null;
-      if (isRecompute && startTidStr && slutTidStr) {
-        const start = Date.parse(startTidStr);
-        const end = Date.parse(slutTidStr);
-        if (!Number.isNaN(start) && !Number.isNaN(end) && end > start) {
-          durationOverride = Math.round((end - start) / 1000);
-        }
-      }
-
-      const { score, validitet, penaltyBreakdown, durationSec } =
-        scoreFromAnswers(detailedAnswers, durationOverride);
-
-      const finishedAt = isRecompute
-        ? (slutTidStr ? Date.parse(slutTidStr) : Date.now())
-        : Date.now();
-
-      const result = {
-        ...respondentInfo,
-        startTid: isRecompute
-          ? (startTidStr || null)
-          : (surveyStartTs ? new Date(surveyStartTs).toISOString() : null),
-        slutTid: new Date(finishedAt).toISOString(),
-        besvarelsestidSek: durationOverride != null ? durationOverride : durationSec,
-        validitet,
-        score,
-        detailedAnswers,
-        penaltyBreakdown,
-      };
-
-      const jsonBlob = new Blob([JSON.stringify(result, null, 2)], { type: "application/json" });
-
-      try {
-        if (window.showSaveFilePicker) {
-          const handle = await window.showSaveFilePicker({
-            suggestedName: "disc-resultat.json",
-            types: [{ description: "JSON-fil", accept: { "application/json": [".json"] } }],
-          });
-          const writable = await handle.createWritable();
-          await writable.write(jsonBlob);
-          await writable.close();
-        } else {
-          const url = URL.createObjectURL(jsonBlob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = "disc-resultat.json";
-          link.click();
-          URL.revokeObjectURL(url);
-        }
-      } catch (e) {
-        alert("Kunne ikke gemme filen.");
-      }
-
-      document.getElementById("downloadScreen").style.display = "none";
-      document.getElementById("thankYouScreen").style.display = "block";
-    }
-
     // ---------- Flow ----------
     function startSurvey() {
       const rawDate = document.getElementById("inputDato").value;
@@ -855,5 +701,203 @@
       }
     });
   </script>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  import { getDatabase, ref, push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBpfx2mK6X5Vt7EI8CMPD7KRArA2zqsVHA",
+    authDomain: "disc-7965a.firebaseapp.com",
+    databaseURL: "https://disc-7965a-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "disc-7965a",
+    storageBucket: "disc-7965a.firebasestorage.app",
+    messagingSenderId: "117290845157",
+    appId: "1:117290845157:web:dc15c8352e11bc715ce50c"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  // Log anonymt ind
+  signInAnonymously(auth).catch(console.error);
+
+  // Hjælper: vent på auth, hvis nødvendigt
+  function waitForAuth() {
+    if (auth.currentUser) return Promise.resolve(auth.currentUser);
+    return new Promise(resolve => {
+      const un = onAuthStateChanged(auth, (u) => { un(); resolve(u); });
+    });
+  }
+
+  // Klik-håndtering
+  const btn = document.getElementById("sendToFirebase");
+  btn?.addEventListener("click", async () => {
+    try {
+      btn.disabled = true;
+
+      const user = await waitForAuth();
+
+      // Din payload — byt ud med din rigtige Likert JSON senere
+      const data = {
+        test: "hej verden",
+        createdAtClient: Date.now(),
+        userId: user.uid,
+        _serverTs: serverTimestamp()
+      };
+
+      // Gem under submissions/{uid}/{autoKey}
+      const listRef = ref(db, `submissions/${user.uid}`);
+      const newRef = push(listRef);
+      await set(newRef, data);
+
+      alert(`Uploadet til databasen! Key: ${newRef.key}`);
+      console.log("Firebase initialiseret:", app.name);
+    } catch (err) {
+      console.error("Fejl ved upload:", err);
+      alert("Kunne ikke uploade til Firebase – tjek Console for detaljer.");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+  async function downloadLikertJSON(previousResultsText) {
+  let isRecompute = false;
+  let previousResults = null;
+
+  if (previousResultsText) {
+    isRecompute = true;
+    try { previousResults = JSON.parse(previousResultsText); }
+    catch (e) { alert("Ugyldig JSON-fil."); return; }
+    if (!previousResults.detailedAnswers || !Array.isArray(previousResults.detailedAnswers)) {
+      alert("Ugyldig JSON-fil: mangler 'detailedAnswers' array."); return;
+    }
+  } else {
+    // Valider alle spørgsmål (uændret)
+    for (let q = 0; q < likertAnswers.length; q++) {
+      const rows = likertAnswers[q];
+      const incomplete = rows.findIndex((r) => r.naturlig == null || r.arbejde == null);
+      if (incomplete !== -1) {
+        alert(`Spørgsmål ${q + 1} mangler besvarelser. Udfyld venligst alle vurderinger.`);
+        likertCurrent = q;
+        document.getElementById("thankYouScreen").style.display = "none";
+        document.getElementById("questions").style.display = "block";
+        renderLikertSurvey();
+        return;
+      }
+    }
+  }
+
+  // Byg detailedAnswers (din eksisterende logik)
+  let detailedAnswers, startTidStr, slutTidStr;
+  if (isRecompute) {
+    detailedAnswers = previousResults.detailedAnswers;
+    startTidStr = previousResults.startTid || null;
+    slutTidStr = previousResults.slutTid || null;
+
+    const { dato, fornavn, efternavn, koen, firma, email } = previousResults;
+    respondentInfo = {
+      ...(respondentInfo || {}),
+      ...(dato ? { dato } : {}),
+      ...(fornavn ? { fornavn } : {}),
+      ...(efternavn ? { efternavn } : {}),
+      ...(koen ? { koen } : {}),
+      ...(firma ? { firma } : {}),
+      ...(email ? { email } : {}),
+    };
+  } else {
+    detailedAnswers = [];
+    const labels = ["Meget uenig", "Uenig", "Både/og", "Enig", "Meget enig"];
+    for (let q = 0; q < likertQuestions.length; q++) {
+      const items = likertQuestions[q].items;
+      const rows = likertAnswers[q];
+      for (let r = 0; r < rows.length; r++) {
+        const row = rows[r];
+        const dim = (row.disc || "").toUpperCase();
+        const isRev = !!row.reverse;
+        const isTest = !!row.test;
+        const vArbejde = Number(row.arbejde);
+        const vNaturlig = Number(row.naturlig);
+        detailedAnswers.push({
+          question: row.text,
+          disc: dim,
+          naturlig: {
+            value: vNaturlig,
+            label: labels[vNaturlig - 1],
+            points: isRev ? -getPoints(vNaturlig) : getPoints(vNaturlig),
+          },
+          arbejde: {
+            value: vArbejde,
+            label: labels[vArbejde - 1],
+            points: isRev ? -getPoints(vArbejde) : getPoints(vArbejde),
+          },
+          isReverse: isRev,
+          isTest: isTest,
+        });
+      }
+    }
+  }
+
+  // Varighed ved genberegning (uændret)
+  let durationOverride = null;
+  if (isRecompute && startTidStr && slutTidStr) {
+    const start = Date.parse(startTidStr);
+    const end = Date.parse(slutTidStr);
+    if (!Number.isNaN(start) && !Number.isNaN(end) && end > start) {
+      durationOverride = Math.round((end - start) / 1000);
+    }
+  }
+
+  const { score, validitet, penaltyBreakdown, durationSec } =
+    scoreFromAnswers(detailedAnswers, durationOverride);
+
+  const finishedAt = isRecompute
+    ? (slutTidStr ? Date.parse(slutTidStr) : Date.now())
+    : Date.now();
+
+  const result = {
+    ...respondentInfo,
+    startTid: isRecompute
+      ? (startTidStr || null)
+      : (surveyStartTs ? new Date(surveyStartTs).toISOString() : null),
+    slutTid: new Date(finishedAt).toISOString(),
+    besvarelsestidSek: durationOverride != null ? durationOverride : durationSec,
+    validitet,
+    score,
+    detailedAnswers,
+    penaltyBreakdown,
+  };
+
+  // ⬇️ Kun upload til Firebase — ingen lokal download
+  try {
+    // Vent på at auth er klar
+    const user = await new Promise(resolve => {
+      if (auth.currentUser) return resolve(auth.currentUser);
+      const un = onAuthStateChanged(auth, u => { un(); resolve(u); });
+    });
+
+    const listRef = ref(db, `submissions/${user.uid}`);
+    const newRef = push(listRef);
+
+    await set(newRef, {
+      ...result,
+      userId: user.uid,
+      _serverTs: serverTimestamp()
+    });
+
+    console.log("Upload OK →", `submissions/${user.uid}/${newRef.key}`);
+  } catch (e) {
+    console.error("Upload til Firebase fejlede:", e);
+    alert("Kunne ikke uploade til databasen. Prøv igen.");
+    return; // afbryd skærmskift når upload fejler
+  }
+
+  // Skift UI (tak-skærm) — ingen fil-download
+  document.getElementById("questions").style.display = "none";
+  document.getElementById("thankYouScreen").style.display = "block";
+}
+  window.downloadLikertJSON = downloadLikertJSON;
+</script>
+
 </body>
 </html>
