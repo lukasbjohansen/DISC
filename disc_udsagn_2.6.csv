@@ -1,0 +1,49 @@
+﻿Udsagn,DISC,reverse,test
+"Jeg går hurtigt til handling, også når alt ikke er afklaret",D,FALSE,FALSE
+"Jeg tager styringen, hvis ting går for langsomt.",D,FALSE,FALSE
+Jeg er ikke glad for konkurrencer og det at konkurrere,D,TRUE,FALSE
+Jeg vælger tempo og fremdrift frem for den perfekte løsning,D,FALSE,FALSE
+Jeg afslutter grundigt selvom tempoet bliver langsomt,D,TRUE,FALSE
+"Jeg siger min mening, selv om det kan være upopulært",D,FALSE,FALSE
+"Jeg bryder ind, hvis vi spilder tiden",D,FALSE,FALSE
+Jeg kan ikke lide at tage styring og ansvar,D,TRUE,FALSE
+"Jeg ønsker ikke tage risiko, når jeg tager beslutninger",D,TRUE,FALSE
+"Jeg tager ansvar, selv om det kan give modstand",D,FALSE,FALSE
+Jeg vælger hurtige beslutninger frem for lange analyser.,D,FALSE,FALSE
+"Jeg udfordrer andre, for at nå målet",D,FALSE,FALSE
+Jeg elsker at dele mine idéer – også før de er færdige,I,FALSE,FALSE
+Jeg starter gerne samtaler med mennesker jeg ikke kender.,I,FALSE,FALSE
+Jeg har ikke behov for anerkendelse for min indsats og mit bidrag,I,TRUE,FALSE
+Jeg er meget social og nyder at have mange relationer,I,FALSE,FALSE
+Jeg er godt til at inspirere andre til at prøve noget nyt,I,FALSE,FALSE
+Jeg er lidt pessimistisk og ser ofte begrænsninger frem for muligheder,I,TRUE,FALSE
+Jeg er nok mest lidt introvert og det kan dræne min energi at være social,I,TRUE,FALSE
+Jeg er ikke gange for at tage ordet og dele mine tanker,I,FALSE,FALSE
+Jeg har nemt ved at finde fælles emner med fremmede mennesker,I,FALSE,FALSE
+"Jeg taler godt, også selv om jeg ikke er forberedt",I,FALSE,FALSE
+Jeg siger ikke ja til nye muligheder uden at kende detaljerne grundigt,I,TRUE,FALSE
+Jeg har let ved at tilpasse mig sociale situationer og nye mennesker,I,FALSE,FALSE
+Jeg foretrækker stabile rammer frem for hyppige ændringer,S,FALSE,FALSE
+Jeg elsker spontanitet og fremdrift mere end tryghed og stabilitet,S,TRUE,FALSE
+"Jeg tager gerne risiko i mine beslutninger, da det motiverer mig",S,TRUE,FALSE
+Jeg foretrækker samarbejde frem for konkurrence,S,FALSE,FALSE
+"Jeg tager gerne en konflikt, når det er nødvendigt",S,TRUE,FALSE
+Jeg nyder at have ro til at udføre mine opgaver i mit eget tempo,S,FALSE,FALSE
+"Jeg er vedholdende og slipper ikke opgaver, før de er løst ordentligt",S,FALSE,FALSE
+"Jeg tager gerne hurtige beslutninger, så jeg hurtigt kan komme videre",S,TRUE,FALSE
+"Jeg beskytter det, der fungerer godt og stabilt",S,FALSE,FALSE
+Jeg trives bedst med faste rammer og klare rutiner,S,FALSE,FALSE
+Jeg bryder mig ikke om at presse andre mennesker,S,FALSE,FALSE
+Jeg foretrækker færre langvarige relationer frem for mange afvekslende,S,FALSE,FALSE
+"Jeg fokuserer på detaljer, fordi det giver kvalitet",C,FALSE,FALSE
+"Jeg afslutter opgaver, før jeg starter på nye",C,FALSE,FALSE
+"Jeg går op i, at standarder og regler bliver fulgt",C,FALSE,FALSE
+"Jeg holder fast i planer, og undgår for meget spontanitet",C,FALSE,FALSE
+"Jeg ser og retter fejl, også de mindre væsentlige",C,FALSE,FALSE
+"Jeg tager gerne en genvej, også selvom det kan medføre fejl",C,TRUE,FALSE
+Jeg kan godt føle mig indskrænket af struktur og systemer,C,TRUE,FALSE
+Jeg går ikke op i at bevare dokumentation til senere brug,C,TRUE,FALSE
+Jeg prioriterer præcision frem for hurtighed,C,FALSE,FALSE
+Jeg arbejder bedst spontant uden at være bundet af struktur,C,FALSE,FALSE
+Jeg trives dårligt med mange regler og retningslinjer,C,TRUE,FALSE
+"Jeg undersøger fakta grundigt, før jeg giver svar",C,FALSE,FALSE
